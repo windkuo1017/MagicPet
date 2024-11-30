@@ -11,7 +11,9 @@ int getRandomNum(int min, int max)
 bool dodgeSuccessfully(int speed)
 {
 	int x = getRandomNum(1, 100);
+	
 	cout << x << " ";
+	
 	return speed >= x ?  1 : 0;
 }
 

@@ -37,26 +37,26 @@ public:
 	MagicPet(const MagicPet& other);
 	~MagicPet();
 	
-    void initializeHP() { HP = maxHP; }
+    void initializeHP() { HP = maxHP; } //出場時回覆血量至最大值 
     string getName() const { return name; }
 	string getType() const { return type; }
+	int getHP() const { return HP; } 
 	
     bool dodgeSuccessfully() const; //是否成功躲避 
     
-
     
 	bool dominate(MagicPet* opponent) const; //0:被克制 1:克制
 	
 	void attack(MagicPet* opponent, int skillID); //以第 skillID 招攻擊opponent 
 
-	void reduceSkillsCD();
+	void reduceSkillsCD(); //每回合結束時，減少 CD 時間 
 
-    virtual void getExpAfterBattle(bool win, int exp);
+    virtual void getExpAfterBattle(bool win, int exp); //獲得經驗 
     
-    virtual void levelUp() { maxHP += 2; ATK += 2; DFS += 2;}
+    virtual void levelUp() { maxHP += 2; ATK += 2; DFS += 2;} //升等可使能力提升 
 };
 
-ostream& operator<<(ostream& out, const MagicPet& p);
+ostream& operator<<(ostream& out, const MagicPet& p); //輸出 MagicPet 的能力資訊 
 
 MagicPet::MagicPet(string n, string t, int H, int s)
 : name(n), type(t), maxHP(H), HP(H), Exp(0), level(1), ATK(10), DFS(5), SPD(s) {}
@@ -76,7 +76,7 @@ MagicPet::~MagicPet()
 		delete skill;
 }
 
-bool MagicPet::dodgeSuccessfully() const
+bool MagicPet::dodgeSuccessfully() const 
 {
 //   srand( time(nullptr) * 703); //種子碼 do it in main func.
 //	srand(123); //debug
@@ -105,9 +105,9 @@ bool MagicPet::attack(MagicPet* opponent, int skillID)
 	
     if (skillID < skills.size()) 
 	{
-        bool successful = skills[skillID]->useSkill(this); // Pass this MagicPet object
+        bool successful = skills[skillID]->useSkill(this); // Pass this MagicPet object，檢查是否成功攻擊（命中率、使用次數） 
         
-        if(! successful)
+        if(! successful)  
         	return false;
     }
     else
@@ -123,12 +123,12 @@ bool MagicPet::attack(MagicPet* opponent, int skillID)
 		return false;
 	}
 		
-	int damage = ATK + skills[skillID]->power - opponent->DFS;
+	int damage = ATK + skills[skillID]->power - opponent->DFS;　//攻擊力+招式強度-防禦 
 	
 	if(this->dominate(opponent))
 	{
 		cout << "屬性克制！ "; 
-		damage *= 2;
+		damage *= 2; //傷害兩倍 
 	}
 	
 	cout << "對 " << opponent->name << " 造成 " << damage << " 傷害"; 
@@ -143,6 +143,7 @@ void MagicPet::reduceSkillsCD()
 		skill->reduceCD();
 	}
 };
+
 
 void MagicPet::getExpAfterBattle(bool win, int xp)
 {
