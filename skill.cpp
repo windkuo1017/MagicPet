@@ -8,7 +8,7 @@ int getRandomNum(int min, int max)
 	return rand() % max + min;
 }
 
-Class Skill
+class Skill
 {
 friend class MagicPet;
 protected:
@@ -20,12 +20,12 @@ protected:
   int timesUsed = 0;
 
 public:
-  Skill(int _CD, string _name); 
+  virtual Skill(int _CD, string _name, int _hitRate):formerCD(_CD),CD(0),name(_name),hitRate(_hitRate); 
   Skill(const Skill& another); //copy constructor
   void skillUsed(){CD = formerCD;}
   void reduceCD(){CD--;}
   bool useSkill(MagicPet pokemon);
-  void printSkill(){cout << this;}
+  void printSkill(){cout << *this;}
   bool hitFail();
   friend ostream& operator<<(ostream& os, const Skill& skill)
   {
@@ -35,7 +35,7 @@ public:
     return os;
   }
 }
-Skill::Skill(int _CD, string _name):formerCD(_CD),CD(0),name(_name);
+
 
 bool Skill::useSkill(MagicPet* pokemon)
 {
@@ -49,7 +49,7 @@ bool Skill::useSkill(MagicPet* pokemon)
     timesUsed ++;
     if(hitFail())
     {
-      cout << "哈哈，" << pokemon->name << "沒打中唷！";
+      cout << "哈哈，" << pokemon->getName() << "沒打中唷！";
       return false;
     }
     else
@@ -73,26 +73,33 @@ Skill::Skill(const Skill& another)
 }
 
 
-Class SpecialSkill : public Skill
+class SpecialSkill : public Skill
 {
 friend class MagicPet; 
   protected:
   string type;
   int timesLimit;
-  
+
   public:
-  specialSkill(string _type):type(_type);
-  bool usedTooMuch();
+  SpecialSkill(string _name,string _type,int _timesLimit):Skill(5,_name),type(_type),timesLimit(_timesLimit){}
+  SpecialSkill(SpecialSkill* another)
+  {
+    skill(SpecialSkill* another);
+    type = another.type;
+    timesLimit = another.timesLimit;
+  }
+  bool usedTooMuch()
+  {
+    if(timesUsed > timesLimit)
+    {
+      cout << "無法再使用此技能\n";
+      return true;
+    }
+    return false;
+  }
   
 }
 
-bool SpecialSkill::usedTooMuch()
-{
-  if(timesUsed > timesLimit)
-  {
-    cout << "無法再使用此技能\n";
-    return true;
-  }
-  return false;
-}
+
+
 
