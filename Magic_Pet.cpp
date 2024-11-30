@@ -47,7 +47,9 @@ public:
     
 	bool dominate(MagicPet* opponent) const; //0:被克制 1:克制
 	
-	void attack(MagicPet* opponent, int skillID); //以第 skillID 招攻擊opponent  
+	void attack(MagicPet* opponent, int skillID); //以第 skillID 招攻擊opponent 
+
+	void reduceSkillsCD();
 
     virtual void getExpAfterBattle(bool win, int exp);
     
@@ -133,6 +135,14 @@ bool MagicPet::attack(MagicPet* opponent, int skillID)
 	opponent->HP -= damage;
 	return true;
 }
+
+void MagicPet::reduceSkillsCD()
+{
+	for(Skill* skill : skills)
+	{
+		skill->reduceCD();
+	}
+};
 
 void MagicPet::getExpAfterBattle(bool win, int xp)
 {
