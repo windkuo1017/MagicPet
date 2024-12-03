@@ -523,7 +523,13 @@ public:
           if(playerEscape)
           {
            cout << "我方逃跑成功！戰鬥結束，將以雙方總血量計算輸贏。\n";
-           // 以總血量計算輸贏
+           if(!(getPlayerPet(0)->isAlive())) {
+             getPlayerPet(0)->die();
+           }
+
+           if(!(getPlayerPet(1)->isAlive())) {
+             getPlayerPet(1)->die();
+           }
            break;
           }
 
@@ -629,15 +635,11 @@ public:
           {
             if(idxComputer == 0)
             {
-              if(computerPets[1].isAlive())
-              {
-                cout << "敵方此隻寵物已被打被，下回合將派出第二隻寵物應戰！\n";
-                idxComputer = 1;
-                computerPet = computerPets[1];
-              }
+              cout << "敵方此隻寵物已被打被，下回合將派出第二隻寵物應戰！\n";
+              idxComputer = 1;
+              computerPet = computerPets[1];
             }
           }
-
           round++;
         }
     }
