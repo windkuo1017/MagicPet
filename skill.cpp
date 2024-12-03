@@ -5,7 +5,7 @@ using namespace std;
 
 int getRandomNum(int min, int max)
 {
-	return rand() % max + min;
+	return rand() % (max - min + 1) + min;
 }
 
 class Skill
@@ -17,7 +17,7 @@ protected:
   int CD;//當前CD
   int formerCD;//使用技能的CD
   int hitRate;//命中率
-  int timesUsed = 0;
+  int timesUsed = 0;//已使用次數
 
 public:
   Skill(int _CD, string _name, int _hitRate):formerCD(_CD),CD(0),name(_name),hitRate(_hitRate){}
@@ -27,7 +27,7 @@ public:
   void reduceCD(){if(CD > 0) CD--;}
   void printSkill(){cout << *this;} //展示技能名稱
   virtual bool useSkill(MagicPet* pokemon); //使用技能
-  bool hitFail(); //判定技能是否命中
+  bool hitFail(){return getRandomNum(1,100) > hitRate;} //判定技能是否命中
   friend ostream& operator<<(ostream& os, const Skill& skill)
   {
       os << skill.name << "\n";
@@ -39,7 +39,6 @@ public:
   }
 
 };
-
 
 bool Skill::useSkill(MagicPet* pokemon)
 {
@@ -54,17 +53,8 @@ bool Skill::useSkill(MagicPet* pokemon)
       cout << "哈哈，" << pokemon->getName() << "沒打中唷！";
       return false;
     }
-    else
-      return true;
+    return true;
 }
-
-bool Skill::hitFail()//沒打中
-{
-  int x = getRandomNum(1,100);
-  return x > hitRate;
-}
-
-
 class SpecialSkill : public Skill
 {
 friend class MagicPet; 
@@ -73,8 +63,10 @@ friend class MagicPet;
   int timesLimit; //使用次數限制
 
   public:
-  SpecialSkill(int _CD, string _name, int _hitRate, string _type, int _timesLimit):Skill(_CD, _name, _hitRate),type(_type),timesLimit(_timesLimit){}
-  SpecialSkill(const SpecialSkill& another); // copy constructor
+  SpecialSkill(int _CD, string _name, int _hitRate, string _type, int _timesLimit)
+  :Skill(_CD, _name, _hitRate),type(_type),timesLimit(_timesLimit){}
+  SpecialSkill(const SpecialSkill& another)
+  :Skill(another),type(another.type),timesLimit(another.timesLimit){} // copy constructor
   ~SpecialSkill() override;
   bool useSkill(MagicPet* pokemon) override;
   bool usedTooMuch();
@@ -87,8 +79,7 @@ friend class MagicPet;
   }
 };
 
-SpecialSkill::SpecialSkill(const SpecialSkill& another)
-:Skill(another),type(another.type),timesLimit(another.timesLimit);
+
 
 bool SpecialSkill::usedTooMuch()
 {
