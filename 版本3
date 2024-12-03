@@ -7,7 +7,6 @@
 using namespace std;
 
 // 預設等級六為最高級，不同寶可夢的速度增加應該會不同
-// 輸贏會導致經驗值應該會增減30
 int exps[6] = {0, 220, 450, 700, 1000, 1500};
 float maxHPs[6] = {60, 70, 84, 106, 130, 160};
 int attackPowers[6] = {10, 12, 16, 24, 34, 45};
@@ -242,28 +241,28 @@ private:
     int round = 1;
     int lastAdvRd = -1;  // 玩家上一次使用進階攻擊的回合
     bool playerEscape = false;
-    vector<PlayerPet> playerPets;
-    vector<ComputerPet> computerPets;
+    vector<PlayerPet*> playerPets;
+    vector<ComputerPet*> computerPets;
 
 public:
     void addPlayerPet(PlayerPet* pet)
     {
-      playerPets.push_back(*pet);
+      playerPets.push_back(pet);
     }
 
     void addComputerPet(ComputerPet* pet)
     {
-      computerPets.push_back(*pet);
+      computerPets.push_back(pet);
     }
 
     PlayerPet* getPlayerPet(int idx)
     {
-      return &(playerPets[idx]);
+      return playerPets[idx];
     }
 
     ComputerPet* getComputerPet(int idx)
     {
-      return &(computerPets[idx]);
+      return computerPets[idx];
     }
 
     void startBattle(Player& player) {
