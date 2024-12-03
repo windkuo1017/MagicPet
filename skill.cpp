@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstdlib>
-
+#include "skill.h"
 
 using namespace std;
 

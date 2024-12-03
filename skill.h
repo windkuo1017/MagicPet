@@ -1,3 +1,5 @@
+#ifndef SKILL_H
+#define SKILL_H
 #include <iostream>
 #include <string>
 #include "MagicPet.h"
