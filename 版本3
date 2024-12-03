@@ -538,7 +538,7 @@ public:
 
           if(playerEscape)
           {
-           cout << "我方逃跑成功！戰鬥結束，將以雙方總血量計算輸贏。\n";
+           cout << "我方逃跑成功！戰鬥結束。\n";
            if(!(getPlayerPet(0)->isAlive())) {
              getPlayerPet(0)->die();
            }
