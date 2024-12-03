@@ -246,32 +246,41 @@ private:
     vector<ComputerPet> computerPets;
 
 public:
-    void addPlayerPet(PlayerPet& pet)
+    void addPlayerPet(PlayerPet* pet)
     {
-      playerPets.push_back(pet);
+      playerPets.push_back(*pet);
+    }
+
+    void addComputerPet(ComputerPet* pet)
+    {
+      computerPets.push_back(*pet);
     }
 
     PlayerPet* getPlayerPet(int idx)
     {
       return &(playerPets[idx]);
     }
-    
-    void generateComputerPets(Player& player)
+
+    ComputerPet* getComputerPet(int idx)
     {
+      return &(computerPets[idx]);
+    }
+
+    void startBattle(Player& player) {
         // 先找出玩家寵物個屬性第二大數值作為電腦寵物數值基準
         int maxHP = player.findSecondMaxHP();
         int attackPower = player.findSecondAttackPower();
         int defensePower = player.findSecondDefensePower();
         int speed = player.findSecondDefensePower();
 
-        computerPets.push_back(ComputerPet(types[rand() % 5], maxHP + 5 * ((- 1) ^ (rand() % 2)), attackPower + 3 * ((- 1) ^ (rand() % 2)), defensePower + 2 * ((- 1) ^ (rand() % 2)), speed + 3 * ((- 1) ^ (rand() % 2))));
-        computerPets.push_back(ComputerPet(types[rand() % 5], maxHP + 5 * ((- 1) ^ (rand() % 2)), attackPower + 3 * ((- 1) ^ (rand() % 2)), defensePower + 2 * ((- 1) ^ (rand() % 2)), speed + 3 * ((- 1) ^ (rand() % 2))));      
-    }
+        ComputerPet pet1(types[rand() % 5], maxHP + 5 * ((- 1) ^ (rand() % 2)), attackPower + 3 * ((- 1) ^ (rand() % 2)), defensePower + 2 * ((- 1) ^ (rand() % 2)), speed + 3 * ((- 1) ^ (rand() % 2)));
+        ComputerPet pet2(types[rand() % 5], maxHP + 5 * ((- 1) ^ (rand() % 2)), attackPower + 3 * ((- 1) ^ (rand() % 2)), defensePower + 2 * ((- 1) ^ (rand() % 2)), speed + 3 * ((- 1) ^ (rand() % 2)));
+        ComputerPet* pet1ptr = &(pet1);
+        ComputerPet* pet2ptr = &(pet2);
+        addComputerPet(pet1ptr);
+        addComputerPet(pet2ptr);
 
-    void startBattle(Player& player) {
-        generateComputerPets(player);
-
-        cout << "您遇到的對手屬性為：" << computerPets[0].getType() << "、" << computerPets[1].getType() << "\n";
+        cout << "您遇到的對手屬性為：" << getComputerPet(0)->getType() << "、" << getComputerPet(1)->getType() << "\n";
         cout << "你需要派出兩隻寵物應戰，請輸入欲派出的第一隻寵物名稱：（此寵物將會預設為第一回合我方的出戰寵物）";
         string petName1;
         int pet1Idx = -1;
@@ -320,27 +329,27 @@ public:
           }
         }
 
-        addPlayerPet(*(player.getPet(pet1Idx)));
-        addPlayerPet(*(player.getPet(pet2Idx)));
+        addPlayerPet(player.getPet(pet1Idx));
+        addPlayerPet(player.getPet(pet2Idx));
 
         int idxPlayer = 0;
         int idxComputer = 0;
         PlayerPet* playerPet = getPlayerPet(idxPlayer);
-        ComputerPet computerPet = computerPets[idxComputer];
+        ComputerPet* computerPet = getComputerPet(idxComputer);
 
         cout << "\n\n對戰開始！" << endl;
 
         bool playerStillIn = true;
 
         while ((getPlayerPet(0)->isAlive() or getPlayerPet(1)->isAlive())
-        and (computerPets[0].isAlive() or computerPets[1].isAlive())
+        and (getComputerPet(0)->isAlive() or getComputerPet(1)->isAlive())
         and !playerEscape)
         {
           cout << "\n\n\nRound " << round << "\n" << "雙方同時出招！\n";
           cout << "此回合我方派出——" << "\n";
           playerPet->print();
           cout << "此回合敵方派出——" << "\n";
-          computerPet.print();
+          computerPet->print();
           cout << "請選擇您欲發起的行動（以數字回覆）：\n1.普通攻擊\n2.進階攻擊 ";
           if(lastAdvRd == -1 or (lastAdvRd != -1 and round - lastAdvRd >= 3))
           {
@@ -365,22 +374,22 @@ public:
               if(computerChoice == "1")
               {
                 cout << "敵方也使出了攻擊！\n";
-                playerPet->takeDamage(computerPet.getAttackPower());
-                cout << "遭受敵方攻擊！我方血量減" << computerPet.getAttackPower() << "\n";
-                computerPet.takeDamage(playerPet->getAttackPower());
+                playerPet->takeDamage(computerPet->getAttackPower());
+                cout << "遭受敵方攻擊！我方血量減" << computerPet->getAttackPower() << "\n";
+                computerPet->takeDamage(playerPet->getAttackPower());
                 cout << "對方也因遭受我方攻擊血量減" << playerPet->getAttackPower() << "\n";
               }
               else
               {
                 cout << "敵方選擇防禦！\n";
-                if(computerPet.getDefense() >= playerPet->getAttackPower())
+                if(computerPet->getDefense() >= playerPet->getAttackPower())
                 {
                   cout << "敵方擋掉了你的攻擊，因此毫髮無傷。\n";
                 }
                 else
                 {
-                  computerPet.takeDamage(playerPet->getAttackPower() - computerPet.getDefense());
-                  cout << "敵方遭受我方攻擊，血量減" << playerPet->getAttackPower() - computerPet.getDefense() << "\n";
+                  computerPet->takeDamage(playerPet->getAttackPower() - computerPet->getDefense());
+                  cout << "敵方遭受我方攻擊，血量減" << playerPet->getAttackPower() - computerPet->getDefense() << "\n";
                 }
               }
               break;
@@ -390,31 +399,31 @@ public:
               if(computerChoice == "1")
               {
                 cout << "敵方也使出了攻擊！\n";
-                playerPet->takeDamage(computerPet.getAttackPower());
-                cout << "遭受敵方攻擊！我方血量減" << computerPet.getAttackPower() << "\n";
+                playerPet->takeDamage(computerPet->getAttackPower());
+                cout << "遭受敵方攻擊！我方血量減" << computerPet->getAttackPower() << "\n";
 
-                if (playerPet->getType() == "金" and computerPet.getType() == "木") {
-                  computerPet.takeDamage((playerPet->getAttackPower()) * 2);
+                if (playerPet->getType() == "金" and computerPet->getType() == "木") {
+                  computerPet->takeDamage((playerPet->getAttackPower()) * 2);
                   cout << "因為我方使出進階攻擊且屬性相剋，對方遭受我方攻擊血量減" << (playerPet->getAttackPower()) * 2 << "\n";
                 }
-                else if (playerPet->getType() == "木" and computerPet.getType() == "土") {
-                  computerPet.takeDamage((playerPet->getAttackPower()) * 2);
+                else if (playerPet->getType() == "木" and computerPet->getType() == "土") {
+                  computerPet->takeDamage((playerPet->getAttackPower()) * 2);
                   cout << "因為我方使出進階攻擊且屬性相剋，對方遭受我方攻擊血量減" << (playerPet->getAttackPower()) * 2 << "\n";
                 }
-                else if (playerPet->getType() == "水" and computerPet.getType() == "火") {
-                  computerPet.takeDamage((playerPet->getAttackPower()) * 2);
+                else if (playerPet->getType() == "水" and computerPet->getType() == "火") {
+                  computerPet->takeDamage((playerPet->getAttackPower()) * 2);
                   cout << "因為我方使出進階攻擊且屬性相剋，對方遭受我方攻擊血量減" << (playerPet->getAttackPower()) * 2 << "\n";
                 }
-                else if (playerPet->getType() == "火" and computerPet.getType() == "金") {
-                  computerPet.takeDamage((playerPet->getAttackPower()) * 2);
+                else if (playerPet->getType() == "火" and computerPet->getType() == "金") {
+                  computerPet->takeDamage((playerPet->getAttackPower()) * 2);
                   cout << "因為我方使出進階攻擊且屬性相剋，對方遭受我方攻擊血量減" << (playerPet->getAttackPower()) * 2 << "\n";
                 }
-                else if (playerPet->getType() == "土" and computerPet.getType() == "水") {
-                  computerPet.takeDamage((playerPet->getAttackPower()) * 2);
+                else if (playerPet->getType() == "土" and computerPet->getType() == "水") {
+                  computerPet->takeDamage((playerPet->getAttackPower()) * 2);
                   cout << "因為我方使出進階攻擊且屬性相剋，對方遭受我方攻擊血量減" << (playerPet->getAttackPower()) * 2 << "\n";
                 }
                 else {
-                  computerPet.takeDamage((playerPet->getAttackPower()) * 2);
+                  computerPet->takeDamage((playerPet->getAttackPower()) * 2);
                   cout << "因為我方使出進階攻擊，對方遭受我方攻擊血量減" << (playerPet->getAttackPower()) * 1.5 << "\n";
                 }
               }
@@ -422,50 +431,50 @@ public:
               {
                 cout << "敵方選擇防禦！\n";
 
-                if (playerPet->getType() == "金" and computerPet.getType() == "木") {
-                  if(computerPet.getDefense() < ((playerPet->getAttackPower()) * 2)) {
-                    computerPet.takeDamage((playerPet->getAttackPower()) * 2 - computerPet.getDefense());
-                    cout << "因為我方使出進階攻擊且屬性相剋，對方遭受我方攻擊血量減" << (playerPet->getAttackPower()) * 2 - computerPet.getDefense() << "\n";
+                if (playerPet->getType() == "金" and computerPet->getType() == "木") {
+                  if(computerPet->getDefense() < ((playerPet->getAttackPower()) * 2)) {
+                    computerPet->takeDamage((playerPet->getAttackPower()) * 2 - computerPet->getDefense());
+                    cout << "因為我方使出進階攻擊且屬性相剋，對方遭受我方攻擊血量減" << (playerPet->getAttackPower()) * 2 - computerPet->getDefense() << "\n";
                   }
                   else
                   {
                     cout << "對方擋掉了你的進階攻擊而毫髮無傷\n";
                   }
                 }
-                else if (playerPet->getType() == "木" and computerPet.getType() == "土") {
-                  if(computerPet.getDefense() < ((playerPet->getAttackPower()) * 2)) {
-                    computerPet.takeDamage((playerPet->getAttackPower()) * 2 - computerPet.getDefense());
-                    cout << "因為我方使出進階攻擊且屬性相剋，對方遭受我方攻擊血量減" << (playerPet->getAttackPower()) * 2 - computerPet.getDefense() << "\n";
+                else if (playerPet->getType() == "木" and computerPet->getType() == "土") {
+                  if(computerPet->getDefense() < ((playerPet->getAttackPower()) * 2)) {
+                    computerPet->takeDamage((playerPet->getAttackPower()) * 2 - computerPet->getDefense());
+                    cout << "因為我方使出進階攻擊且屬性相剋，對方遭受我方攻擊血量減" << (playerPet->getAttackPower()) * 2 - computerPet->getDefense() << "\n";
                   }
                   else
                   {
                     cout << "對方擋掉了你的進階攻擊而毫髮無傷\n";
                   }
                 }
-                else if (playerPet->getType() == "水" and computerPet.getType() == "火") {
-                  if(computerPet.getDefense() < ((playerPet->getAttackPower()) * 2)) {
-                    computerPet.takeDamage((playerPet->getAttackPower()) * 2 - computerPet.getDefense());
-                    cout << "因為我方使出進階攻擊且屬性相剋，對方遭受我方攻擊血量減" << (playerPet->getAttackPower()) * 2 - computerPet.getDefense() << "\n";
+                else if (playerPet->getType() == "水" and computerPet->getType() == "火") {
+                  if(computerPet->getDefense() < ((playerPet->getAttackPower()) * 2)) {
+                    computerPet->takeDamage((playerPet->getAttackPower()) * 2 - computerPet->getDefense());
+                    cout << "因為我方使出進階攻擊且屬性相剋，對方遭受我方攻擊血量減" << (playerPet->getAttackPower()) * 2 - computerPet->getDefense() << "\n";
                   }
                   else
                   {
                     cout << "對方擋掉了你的進階攻擊而毫髮無傷\n";
                   }
                 }
-                else if (playerPet->getType() == "火" and computerPet.getType() == "金") {
-                  if(computerPet.getDefense() < ((playerPet->getAttackPower()) * 2)) {
-                    computerPet.takeDamage((playerPet->getAttackPower()) * 2 - computerPet.getDefense());
-                    cout << "因為我方使出進階攻擊且屬性相剋，對方遭受我方攻擊血量減" << (playerPet->getAttackPower()) * 2 - computerPet.getDefense() << "\n";
+                else if (playerPet->getType() == "火" and computerPet->getType() == "金") {
+                  if(computerPet->getDefense() < ((playerPet->getAttackPower()) * 2)) {
+                    computerPet->takeDamage((playerPet->getAttackPower()) * 2 - computerPet->getDefense());
+                    cout << "因為我方使出進階攻擊且屬性相剋，對方遭受我方攻擊血量減" << (playerPet->getAttackPower()) * 2 - computerPet->getDefense() << "\n";
                   }
                   else
                   {
                     cout << "對方擋掉了你的進階攻擊而毫髮無傷\n";
                   }
                 }
-                else if (playerPet->getType() == "土" and computerPet.getType() == "水") {
-                  if(computerPet.getDefense() < ((playerPet->getAttackPower()) * 2)) {
-                    computerPet.takeDamage((playerPet->getAttackPower()) * 2 - computerPet.getDefense());
-                    cout << "因為我方使出進階攻擊且屬性相剋，對方遭受我方攻擊血量減" << (playerPet->getAttackPower()) * 2 - computerPet.getDefense() << "\n";
+                else if (playerPet->getType() == "土" and computerPet->getType() == "水") {
+                  if(computerPet->getDefense() < ((playerPet->getAttackPower()) * 2)) {
+                    computerPet->takeDamage((playerPet->getAttackPower()) * 2 - computerPet->getDefense());
+                    cout << "因為我方使出進階攻擊且屬性相剋，對方遭受我方攻擊血量減" << (playerPet->getAttackPower()) * 2 - computerPet->getDefense() << "\n";
                   }
                   else
                   {
@@ -473,9 +482,9 @@ public:
                   }
                 }
                 else {
-                  if(computerPet.getDefense() < ((playerPet->getAttackPower()) * 1.5)) {
-                    computerPet.takeDamage((playerPet->getAttackPower()) * 1.5 - computerPet.getDefense());
-                    cout << "因為我方使出進階攻擊，對方遭受我方攻擊血量減" << (playerPet->getAttackPower()) * 1.5 - computerPet.getDefense() << "\n";
+                  if(computerPet->getDefense() < ((playerPet->getAttackPower()) * 1.5)) {
+                    computerPet->takeDamage((playerPet->getAttackPower()) * 1.5 - computerPet->getDefense());
+                    cout << "因為我方使出進階攻擊，對方遭受我方攻擊血量減" << (playerPet->getAttackPower()) * 1.5 - computerPet->getDefense() << "\n";
                   }
                   else
                   {
@@ -491,14 +500,14 @@ public:
               if(computerChoice == "1")
               {
                 cout << "敵方使出了攻擊！\n";
-                if(playerPet->getDefense() >= computerPet.getAttackPower())
+                if(playerPet->getDefense() >= computerPet->getAttackPower())
                 {
                   cout << "你成功擋掉敵方的攻擊，因此毫髮無傷。\n";
                 }
                 else
                 {
-                  playerPet->takeDamage(computerPet.getAttackPower() - playerPet->getDefense());
-                  cout << "我方因遭敵方攻擊，血量減" << computerPet.getAttackPower() - playerPet->getDefense() << "\n";
+                  playerPet->takeDamage(computerPet->getAttackPower() - playerPet->getDefense());
+                  cout << "我方因遭敵方攻擊，血量減" << computerPet->getAttackPower() - playerPet->getDefense() << "\n";
                 }                
               }
               else
@@ -515,8 +524,8 @@ public:
                   cout << "敵方使出攻擊！\n但我方逃跑成功因而毫髮無傷，退出戰鬥。\n";
                 }
                 else {
-                  cout << "敵方使出攻擊！\n但我方逃跑失敗而正中對方攻擊，血量減" << computerPet.getAttackPower() << "\n";
-                  playerPet->takeDamage(computerPet.getAttackPower());
+                  cout << "敵方使出攻擊！\n但我方逃跑失敗而正中對方攻擊，血量減" << computerPet->getAttackPower() << "\n";
+                  playerPet->takeDamage(computerPet->getAttackPower());
                 }
               }
               else {
@@ -533,7 +542,7 @@ public:
 
           cout << "經過此回合，雙方現在的狀態為：\n";
           playerPet->print();
-          computerPet.print();
+          computerPet->print();
 
           if(playerEscape)
           {
@@ -551,7 +560,7 @@ public:
           if(!playerPet->isAlive())  // 我方現在這隻已戰敗
           {
             if(!getPlayerPet(0)->isAlive() and !getPlayerPet(1)->isAlive()) {
-              if(computerPets[0].isAlive() or computerPets[1].isAlive()) {
+              if(getComputerPet(0)->isAlive() or getComputerPet(1)->isAlive()) {
                 cout << "您的兩隻寵物均戰敗，敵方贏得此次戰鬥的勝利！\n";
                 getPlayerPet(0)->die();
                 getPlayerPet(1)->die();
@@ -579,7 +588,7 @@ public:
             }
           }
           else {  // 我方現在這隻還活著
-            if (!computerPets[0].isAlive() and !computerPets[1].isAlive())
+            if (!getComputerPet(0)->isAlive() and !getComputerPet(1)->isAlive())
             {
               cout << "敵方兩隻寵物均被打敗，恭喜您獲得此次戰鬥的勝利！\n";
               if(getPlayerPet(0)->isAlive()) {
@@ -646,13 +655,13 @@ public:
           }
 
 
-          if(!(computerPet.isAlive()))
+          if(!(computerPet->isAlive()))
           {
             if(idxComputer == 0)
             {
               cout << "敵方此隻寵物已被打被，下回合將派出第二隻寵物應戰！\n";
               idxComputer = 1;
-              computerPet = computerPets[1];
+              computerPet = getComputerPet(1);
             }
           }
           round++;
@@ -680,7 +689,7 @@ int main() {
 
 
     while (true) {
-        cout << "以下是您目前擁有的寵物資訊：\n";
+        cout << "\n\n\n以下是您目前擁有的寵物資訊：\n";
         for (int i = 0; i < 5; i++) {
             player.getPet(i)->print();
         }
