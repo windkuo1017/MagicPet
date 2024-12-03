@@ -666,17 +666,21 @@ int main() {
         cout << "以下是您目前擁有的寵物資訊：\n";
         for (int i = 0; i < 5; i++) {
             player.getPet(i)->print();
-        }      
-        cout << "\n\n你準備好加入新戰鬥了嗎？（yes / no）\n";
-        string ans;
-        cin >> ans;
-        if (ans == "yes") {
-            Game game;
-            game.startBattle(player);
-        } else if (ans == "no") {
-            continue;
-        } else {
-            cout << "輸入無效！請重新輸入：";
+        }
+        while(true) {      
+          cout << "你準備好加入新戰鬥了嗎？（yes / no）\n";
+          string ans;
+          cin >> ans;
+          if (ans == "yes") {
+              Game game;
+              game.startBattle(player);
+              break;
+          } else if (ans == "no") {
+              continue;
+          } else {
+              cout << "輸入無效！請重新輸入。\n";
+              continue;
+          }
         }
     }
 
