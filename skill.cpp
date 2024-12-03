@@ -75,9 +75,7 @@ friend class MagicPet;
   public:
   SpecialSkill(int _CD, string _name, int _hitRate, string _type, int _timesLimit):Skill(_CD, _name, _hitRate),type(_type),timesLimit(_timesLimit){}
   SpecialSkill(const SpecialSkill& another); // copy constructor
-  ~SpecialSkill(){
-    delete  
-  }
+  ~SpecialSkill() override;
   bool useSkill(MagicPet* pokemon) override;
   bool usedTooMuch();
   friend ostream& operator<<(ostream& os, const SpecialSkill& skill)
