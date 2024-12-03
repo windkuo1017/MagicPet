@@ -140,6 +140,10 @@ public:
             secondMaxHP = firstMaxHP;
             firstMaxHP = pets[i]->getMaxHP();
         }
+        else if (pets[i]->getMaxHP() == firstMaxHP)
+        {
+            secondMaxHP = firstMaxHP;
+        }
         else if (pets[i]->getMaxHP() > secondMaxHP)
         {
             secondMaxHP = pets[i]->getMaxHP();
@@ -157,6 +161,10 @@ public:
         {
             secondAttackPower = firstAttackPower;
             firstAttackPower = pets[i]->getAttackPower();
+        }
+        else if (pets[i]->getAttackPower() == firstAttackPower)
+        {
+            secondAttackPower = firstAttackPower;
         }
         else if (pets[i]->getAttackPower() > secondAttackPower)
         {
@@ -176,6 +184,10 @@ public:
             secondDefensePower = firstDefensePower;
             firstDefensePower = pets[i]->getDefense();
         }
+        else if (pets[i]->getDefense() == firstDefensePower)
+        {
+            secondDefensePower = firstDefensePower;
+        }
         else if (pets[i]->getDefense() > secondDefensePower)
         {
             secondDefensePower = pets[i]->getDefense();
@@ -193,6 +205,10 @@ public:
         {
             secondSpeed = firstSpeed;
             firstSpeed = pets[i]->getSpeed();
+        }
+        else if (pets[i]->getSpeed() == firstSpeed)
+        {
+            secondSpeed = firstSpeed;
         }
         else if (pets[i]->getSpeed() > secondSpeed)
         {
