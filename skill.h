@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include "MagicPet.h"
 using namespace std;
 
 int getRandomNum(int min, int max);

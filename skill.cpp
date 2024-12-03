@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
-#include "skill.h"
+#include "Skill.h"
+
 using namespace std;
 
 int getRandomNum(int min, int max)
