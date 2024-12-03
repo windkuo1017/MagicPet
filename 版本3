@@ -417,8 +417,6 @@ public:
                   computerPet.takeDamage((playerPet->getAttackPower()) * 2);
                   cout << "因為我方使出進階攻擊，對方遭受我方攻擊血量減" << (playerPet->getAttackPower()) * 1.5 << "\n";
                 }
-
-                lastAdvRd = round;
               }
               else
               {
@@ -485,6 +483,7 @@ public:
                   }
                 }
               }
+              lastAdvRd = round;
               break;
             }
             else if (playerChoice == "3")  // 玩家選擇防禦
