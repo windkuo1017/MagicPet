@@ -118,6 +118,10 @@ public:
       exp = 0;
       levelAdjust();
     }
+
+    void heal() {
+      currentHP = maxHP;
+    }
 };       
 
 // --------------------------- 玩家類 ---------------------------
@@ -543,9 +547,15 @@ public:
            if(!(getPlayerPet(0)->isAlive())) {
              getPlayerPet(0)->die();
            }
+           else {
+             getPlayerPet(0)->heal();
+           }
 
            if(!(getPlayerPet(1)->isAlive())) {
              getPlayerPet(1)->die();
+           }
+           else {
+             getPlayerPet(0)->heal();
            }
            break;
           }
