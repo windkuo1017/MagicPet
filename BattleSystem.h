@@ -25,6 +25,7 @@ public:
 
     // Let player choose pets for the battle
     void choosePlayerPets(Player& player);
+    
 
     // Let both player and computer pet take actions
     void bothTakingAction(PlayerPet*& playerPet, ComputerPet* computerPet, int &idxPlayer);

@@ -24,12 +24,12 @@ protected:
 public:
     Skill(int _CD, string _name, int _hitRate, string _type);  // 建構子
     Skill(const Skill& another);  // 複製建構子
-    virtual ~Skill() = default;   // 虛擬析構子
+    ~Skill() = default;   // 虛擬析構子
 
     void skillUsed();   // 使用後技能CD恢復
-    void reduceCD();    // 減少CD
+    void reduceCD(bool isDefault = 0);    // 減少CD
     void printSkill();  // 展示技能名稱
-    virtual bool useSkill(Pet* pokemon); // 使用技能
+    int useSkill(Pet* pokemon); // 使用技能
     bool hitFail();     // 判定技能是否命中
 
     // 重載輸出流運算符

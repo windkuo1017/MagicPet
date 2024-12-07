@@ -23,6 +23,7 @@ extern string types[5];
 // ¨ç¼Æ«Å§i
 int getRandomNum(int min, int max);
 void sleep(double seconds);
+void alignTime(int times, double sec);
 string strLower(const string& input);
 string formatMsg(const string& message, const string& colorCode = "31", bool bold = true);
 

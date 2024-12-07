@@ -28,10 +28,14 @@ ostream& operator<<(ostream& os, const Skill& skill) {
 }
 
 // 減少技能CD
-void Skill::reduceCD() {
-    if (CD > 0) {
-        CD--;
+void Skill::reduceCD(bool isDefault) {
+    if (isDefault==false){
+        if (CD > 0) CD--;
+    }else{
+        CD = 0;
     }
+    
+    
 }
 
 // 使用技能後恢復CD
@@ -50,18 +54,18 @@ bool Skill::hitFail() {
 }
 
 // 使用技能
-bool Skill::useSkill(Pet* pokemon) {
+int Skill::useSkill(Pet* pokemon) {
     if (CD) {
-        cout << "目前無法使用此技能\n";
-        return false;
+        cout << formatMsg("《系統訊息》", "31", true) << "目前無法使用此技能\n";
+        return -2;
     }
 
     skillUsed();
 
     if (hitFail()) {
-        cout << pokemon->getName() << "發動了攻擊，但沒打中！\n";
+        cout << formatMsg("《系統訊息》", "31", true)  << pokemon->getName() << "發動了攻擊，但沒打中！\n";
         sleep(0.5);
-        return false;
+        return 0;
     }
-    return true;
+    return 1;
 }

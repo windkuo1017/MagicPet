@@ -79,9 +79,13 @@ bool Pet::dominate(Pet* opponent) const {
 
 int Pet::attack(Pet* opponent, int skillID) {
     // cout << "DEBUG 檢查點1" << endl;
-    if (!skills[skillID - 1]->useSkill(this))
-        return 0;
+    int able = skills[skillID - 1]->useSkill(this);
+    if (able == -2)
+        return -2;
 
+    if (able == 0)
+        return 1;
+    
     if (skillID == 1){
         skills[2-1]->reduceCD();
     }
@@ -89,7 +93,7 @@ int Pet::attack(Pet* opponent, int skillID) {
     // cout << "DEBUG 檢查點2" << endl;
     // cout << "DEBUG 速度((((((((((((((())))))))))" << opponent->speed << endl;
     if (opponent->dodgeSuccessfully()) {
-        cout << opponent->name << "成功躲過攻擊\n"; 
+        cout << formatMsg("《系統訊息》", "31", true) << name << " 發動了攻擊，但 " <<opponent->name << " successfully escaped the attack\n"; 
         return 0;
     }
 
@@ -100,6 +104,8 @@ int Pet::attack(Pet* opponent, int skillID) {
                 - opponent->defensePower;
 
     // cout << "DEBUG 檢查點4" << endl;
+
+    cout << formatMsg("《系統訊息》", "31", true);
     if (skillID == 2) { // 大招
         damage *= dominate(opponent) ? 2 : 1.5;
         if (dominate(opponent))
@@ -109,7 +115,7 @@ int Pet::attack(Pet* opponent, int skillID) {
     // cout << "DEBUG 檢查點5" << endl;
 
     damage = max(damage, 0);
-    cout << name << "對 " << opponent->name << " 造成了" << damage << "點傷害" << endl; 
+    cout << name << " 對 " << opponent->name << " 造成了" << damage << "點傷害" << endl; 
     opponent->currentHP -= damage;
     sleep(0.5);
 

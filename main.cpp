@@ -34,7 +34,7 @@ int main() {
     player.addPet(&pet4);
     player.addPet(&pet5);
 
-    cout << "歡迎進入遊戲！\n";
+    cout << formatMsg("《系統訊息》", "31", true)  << "歡迎進入遊戲！\n";
     sleep(0.5);
 
     while (true) {
@@ -45,20 +45,20 @@ int main() {
         sleep(1);
 
         while(true) {      
-          cout << "\n" << formatMsg("《系統訊息》", "31", true) << "你準備好加入新戰鬥了嗎？（yes / no）\n";
+          cout << "\n" << formatMsg("《系統訊息》", "31", true) << "你準備好加入新戰鬥了嗎？（yes / no）\n>> ";
           string ans;
           cin >> ans;
           strLower(ans);
 
-          if (ans == "yes" || ans == "y" || ans == "是") {
+          if (ans == "yes" || ans == "y" || ans == "是" || ans == "1") {
               BattleSystem game;
               game.startBattle(player);
               break;
-          } else if (ans == "no" || ans == "n" || ans == "否") {
+          } else if (ans == "no" || ans == "n" || ans == "否" || ans == "0") {
                 sleep(0.5);
                 continue;
           } else {
-              cout << "輸入無效！請重新輸入。\n";
+              cout  << formatMsg("《系統訊息》", "31", true) << "輸入無效！請重新輸入。\n";
               sleep(0.5);
               continue;
           }
