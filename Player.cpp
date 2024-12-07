@@ -28,22 +28,20 @@ int Player::findSecondMaxAttribute(T (Pet::*getAttribute)() const) {
     return secondMax;
 }
 
-// 查找第二高的最大HP
+
 int Player::findSecondMaxHP() {
     return findSecondMaxAttribute(&Pet::getMaxHP);
 }
 
-// 查找第二高的攻擊力
+
 int Player::findSecondAttackPower() {
     return findSecondMaxAttribute(&Pet::getAttackPower);
 }
- 
-// 查找第二高的防禦力
+
 int Player::findSecondDefensePower() {
     return findSecondMaxAttribute(&Pet::getDefensePower);
 }
 
-// 查找第二高的速度
 int Player::findSecondSpeed() {
     return findSecondMaxAttribute(&Pet::getSpeed);
 }

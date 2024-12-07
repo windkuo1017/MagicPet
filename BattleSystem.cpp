@@ -110,6 +110,9 @@ void BattleSystem::bothTakingAction(PlayerPet*& playerPet, ComputerPet* computer
             idxPlayer = 1 - idxPlayer; // Switch to the other pet
             playerPet = getPlayerPet(idxPlayer);
             cout << formatMsg("╰参癟", "31", true) << "初胐瞷Θ传" << playerPet->name << "" <<endl;
+            sleep(0.5);
+            cout << formatMsg("╰参癟", "31", true) << "笆传胐跌祇笆Ωм瞷传╰参よю阑" <<endl;
+            computerPet->attack(playerPet, computerChoice);
             return;
         }
         
