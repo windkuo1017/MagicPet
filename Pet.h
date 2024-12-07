@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include "FunctionsAndConsts.h"
 using namespace std;
 
 // «e¦V«Å§i

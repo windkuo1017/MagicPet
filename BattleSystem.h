@@ -27,7 +27,7 @@ public:
     void choosePlayerPets(Player& player);
 
     // Let both player and computer pet take actions
-    void bothTakingAction(PlayerPet* playerPet, ComputerPet* computerPet);
+    void bothTakingAction(PlayerPet*& playerPet, ComputerPet* computerPet, int &idxPlayer);
 
     // Start the battle
     void startBattle(Player& player);

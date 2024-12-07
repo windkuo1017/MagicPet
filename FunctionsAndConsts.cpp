@@ -16,10 +16,15 @@ string types[5] = {"gold","wood","water","fire","mud"};
 
 // 函數定義
 int getRandomNum(int min, int max) {
-    static std::mt19937 gen(static_cast<unsigned int>(std::time(nullptr))); // 使用時間初始化生成器
-    std::uniform_int_distribution<int> dist(min, max);
+    // 初始化隨機數生成器，只需要在程式啟動時呼叫一次
+    static bool initialized = false;
+    if (!initialized) {
+        srand(static_cast<unsigned int>(time(nullptr))); // 使用時間初始化種子
+        initialized = true;
+    }
 
-    return dist(gen);
+    // 使用 rand() 生成隨機數並縮放至指定範圍
+    return min + rand() % (max - min + 1);
 }
 
 void sleep(double seconds) {

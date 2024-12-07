@@ -58,7 +58,7 @@ void BattleSystem::choosePlayerPets(Player& player) {
 }
 
 // Function to handle both player and computer actions
-void BattleSystem::bothTakingAction(PlayerPet* playerPet, ComputerPet* computerPet) {
+void BattleSystem::bothTakingAction(PlayerPet*& playerPet, ComputerPet* computerPet, int &idxPlayer) {
     // cout << "進來了!" << endl;
     int playerChoice;
 
@@ -77,7 +77,7 @@ void BattleSystem::bothTakingAction(PlayerPet* playerPet, ComputerPet* computerP
             playerChoice = stoi(option); // Attempt to convert
 
             // Range check
-            if (playerChoice >= 4 || playerChoice <= 0) {
+            if (playerChoice > 4 || playerChoice <= 0) {
                 throw out_of_range("選項超出範圍！");
             }
         } catch (const invalid_argument& e) {
@@ -94,17 +94,23 @@ void BattleSystem::bothTakingAction(PlayerPet* playerPet, ComputerPet* computerP
             computerPet->attack(playerPet, computerChoice);
             return;
         } else if (playerChoice == 3) {
-            cout << "嘗試逃跑中..." << endl;
+            cout << formatMsg("《系統訊息》", "31", true) << "嘗試逃跑中..." << endl;
             sleep(1);
             if (getRandomNum(0,100) < 50) {
-                cout << "逃跑成功！戰鬥結束！" << endl;
+                cout << formatMsg("《系統訊息》", "31", true) << "逃跑成功！戰鬥結束！" << endl;
                 playerEscape = true;
                 return;
             } else {
-                cout << "逃跑失敗！系統寵物發動反擊！" << endl;
+                cout << formatMsg("《系統訊息》", "31", true) << "逃跑失敗！系統寵物發動反擊！" << endl;
                 computerPet->attack(playerPet, computerChoice);
                 return;
             }
+        }else if (playerChoice == 4) {
+            
+            idxPlayer = 1 - idxPlayer; // Switch to the other pet
+            playerPet = getPlayerPet(idxPlayer);
+            cout << formatMsg("《系統訊息》", "31", true) << "場上寵物現在成功更換為" << playerPet->name << "！" <<endl;
+            return;
         }
         
     }
@@ -133,13 +139,14 @@ void BattleSystem::startBattle(Player& player) {
     // Record which pets will be sent into battle
     int idxPlayer = 0;
     int idxComputer = 0;
+    int computerDeadCnt = 0;
     PlayerPet* playerPet = getPlayerPet(idxPlayer);
     ComputerPet* computerPet = getComputerPet(idxComputer);
 
-    cout << "\n\n對戰開始！" << endl;
+    cout << "\n\n對戰開始！\n" << endl;
 
     while (true) {
-        cout << "\n\n\n———————————————— Round " << round << " ————————————————\n" 
+        cout << "———————————————— Round " << round << " ————————————————\n" 
         // << "雙方同時出招！\n"
         ;
 
@@ -157,22 +164,22 @@ void BattleSystem::startBattle(Player& player) {
         } else {
             cout << "（此回合不開放）\n";
         }
-        cout << "　　3.逃跑\n";
+        cout << "　　3.逃跑\n　　4.換角\n";
 
 
-        bothTakingAction(playerPet, computerPet);
+        bothTakingAction(playerPet, computerPet, idxPlayer);
 
         cout << "\n" << formatMsg("《系統訊息》", "31", true) << "經過此回合，雙方現在的狀態為：\n";
         cout << "【我方】" << "\n";
         playerPet->print();
-        cout << "【敵方】" << "\n";
+        cout << "\n【敵方】" << "\n";
         computerPet->print();
         
         sleep(1);
 
         // Check if the player has escaped
         if (playerEscape) {
-            cout << "我方逃跑成功，戰鬥結束。\n";
+            cout << formatMsg("《系統訊息》", "31", true)<< "我方逃跑成功，戰鬥結束。\n";
             cout << "————————————————————————————————————————————————————————————————" << endl;
             for (int i = 0; i < 2; ++i) {
                 getPlayerPet(i)->heal();
@@ -188,15 +195,17 @@ void BattleSystem::startBattle(Player& player) {
         if (!playerPet->isAlive()) {
             if (!getPlayerPet(0)->isAlive() && !getPlayerPet(1)->isAlive()) {
                 if (getComputerPet(0)->isAlive() || getComputerPet(1)->isAlive()) {
-                    cout << "您的兩隻寵物均戰敗，敵方贏得此次戰鬥的勝利！\n";
+                    cout << formatMsg("《系統訊息》", "31", true)<< "您的兩隻寵物均戰敗，敵方贏得此次戰鬥的勝利！\n";
+                    cout << "————————————————————————————————————————————————————————————————" << endl;
                 } else {
-                    cout << "雙方的寵物全戰敗，此次戰鬥平手！\n";
+                    cout << formatMsg("《系統訊息》", "31", true)<< "雙方的寵物全戰敗，此次戰鬥平手！\n";
+                    cout << "————————————————————————————————————————————————————————————————" << endl;
                 }
                 getPlayerPet(0)->lose();
                 getPlayerPet(1)->lose();
                 break;
             } else {
-                cout << "您的該隻寵物已戰敗，我方在下一回合將派出另一隻寵物上場！\n";
+                cout << formatMsg("《系統訊息》", "31", true) << "您的該隻寵物已戰敗，我方在下一回合將派出另一隻寵物上場！\n";
                 idxPlayer = 1 - idxPlayer; // Switch to the other pet
                 playerPet = getPlayerPet(idxPlayer);
             }
@@ -205,21 +214,44 @@ void BattleSystem::startBattle(Player& player) {
         else{ 
             // 電腦兩個都死了
             if (!getComputerPet(0)->isAlive() && !getComputerPet(1)->isAlive()) {
-                cout << "敵方兩隻寵物均被打敗，恭喜您獲得此次戰鬥的勝利！\n";
+                cout << formatMsg("《系統訊息》", "31", true) << "敵方兩隻寵物均被打敗，恭喜您獲得此次戰鬥的勝利！\n";
+                cout << "————————————————————————————————————————————————————————————————" << endl;
                 for (int i = 0; i < 2; ++i) {
                     getPlayerPet(i)->heal();
                     if (getPlayerPet(i)->isAlive()) {
                         getPlayerPet(i)->win();
                     }
                 }
+                sleep(1);
+                cout << endl;
+                sleep(0.5);
+                cout << endl;
+                sleep(0.5);
+                cout << endl;
+                sleep(0.5);
+                cout << endl;
+                sleep(0.5);
+                cout << endl;
+
                 break;
-            }else if (!getComputerPet(0)->isAlive() || !getComputerPet(1)->isAlive()) {
+            
+            }else if ((!getComputerPet(0)->isAlive() || !getComputerPet(1)->isAlive()) && computerDeadCnt == 0 ) {
+                cout << formatMsg("《系統訊息》", "31", true) << "敵方寵物被打敗了，系統換兵上陣！\n";
                 idxComputer = 1 - idxComputer; // Switch to the other enemy pet
                 computerPet = getComputerPet(idxComputer);
+                computerDeadCnt++;
             }
         }
 
         round++;
-        sleep(2);
+
+        sleep(0.5);
+        cout << endl;
+        sleep(0.5);
+        cout << endl;
+        sleep(0.5);
+        cout << endl;
+        sleep(0.5);
+        cout << endl;
     }
 }

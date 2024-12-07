@@ -3,6 +3,7 @@
 #include "FunctionsAndConsts.h"
 #include <algorithm> // for max
 #include <cstdlib>   // for rand
+#include <random>
 #include <ctime>     // for time
 #include <sstream>
 
@@ -61,13 +62,9 @@ void Pet::print() const {
 }
 
 bool Pet::dodgeSuccessfully() const {
-    // 生成 1 到 100 的隨機數
-    int x = getRandomNum(1, 100);
-    // 若速度大於隨機值，則躲避成功
-    bool result = getSpeed() > x;  // 使用 'x' 作為隨機數
-
-    // 顯示是否躲避成功
-    cout << "Dodge successful: " << result << endl;
+    int r = getRandomNum(1, 100);
+    bool result = (speed > r);
+    // cout << "Dodge successful: " << result;
 
     return result; 
 }
@@ -81,31 +78,35 @@ bool Pet::dominate(Pet* opponent) const {
 }
 
 int Pet::attack(Pet* opponent, int skillID) {
-    cout << "DEBUG 檢查點1" << endl;
+    // cout << "DEBUG 檢查點1" << endl;
     if (!skills[skillID - 1]->useSkill(this))
         return 0;
 
-    cout << "DEBUG 檢查點2" << endl;
+    if (skillID == 1){
+        skills[2-1]->reduceCD();
+    }
+
+    // cout << "DEBUG 檢查點2" << endl;
     // cout << "DEBUG 速度((((((((((((((())))))))))" << opponent->speed << endl;
     if (opponent->dodgeSuccessfully()) {
         cout << opponent->name << "成功躲過攻擊\n"; 
         return 0;
     }
 
-    cout << "DEBUG 檢查點3" << endl;
+    // cout << "DEBUG 檢查點3" << endl;
     // cout << attackPower << ", " << skills[skillID]->power << ", " << opponent->defensePower << endl;
     int damage = attackPower 
                 // + skills[skillID]->power 
                 - opponent->defensePower;
 
-    cout << "DEBUG 檢查點4" << endl;
+    // cout << "DEBUG 檢查點4" << endl;
     if (skillID == 2) { // 大招
         damage *= dominate(opponent) ? 2 : 1.5;
         if (dominate(opponent))
             cout << "屬性克制！ ";
     }
 
-    cout << "DEBUG 檢查點5" << endl;
+    // cout << "DEBUG 檢查點5" << endl;
 
     damage = max(damage, 0);
     cout << name << "對 " << opponent->name << " 造成了" << damage << "點傷害" << endl; 
