@@ -6,16 +6,16 @@
 
 using namespace std;
 
-// é è¨­ç­‰ç´šå…­ç‚ºæœ€é«˜ç´šï¼Œä¸åŒå¯¶å¯å¤¢çš„é€Ÿåº¦å¢åŠ æ‡‰è©²æœƒä¸åŒ
+// ¹w³]µ¥¯Å¤»¬°³Ì°ª¯Å¡A¤£¦PÄ_¥i¹Úªº³t«×¼W¥[À³¸Ó·|¤£¦P
 int exps[6] = {0, 220, 450, 700, 1000, 1500};
 float maxHPs[6] = {60, 70, 84, 106, 130, 160};
 int attackPowers[6] = {10, 12, 16, 24, 34, 45};
 int defensePowers[6] = {6, 8, 12, 18, 26, 36};
 int speeds[6] = {30, 35, 42, 54, 64, 78};
 float escapeRate[6] = {0.1, 0.2, 0.35, 0.5, 0.65, 0.8};
-string types[5] = {"é‡‘","æœ¨","æ°´","ç«","åœŸ"};
+string types[5] = {"ª÷","¤ì","¤ô","¤õ","¤g"};
 
-// --------------------------- å¯µç‰©åŸºé¡ ---------------------------
+// --------------------------- Ãdª«°òÃş ---------------------------
 class Pet {
 protected:
     string name;
@@ -32,7 +32,7 @@ public:
     Pet(string name, string type) 
     : name(name), type(type), maxHP(maxHPs[0]), currentHP(maxHPs[0]), attackPower(attackPowers[0]), defensePower(defensePowers[0]), speed(speeds[0]), level(1), exp(0) {};
     Pet(string type, int maxHP, int attackPower, int defensePower, int speed) 
-    : name("æœªçŸ¥ç”Ÿç‰©"), type(type), maxHP(maxHP), currentHP(maxHP), attackPower(attackPower), defensePower(defensePower), speed(speed) {};
+    : name("¥¼ª¾¥Íª«"), type(type), maxHP(maxHP), currentHP(maxHP), attackPower(attackPower), defensePower(defensePower), speed(speed) {};
 
     string getName() const { return name; }
     string getType() const { return type; }
@@ -42,8 +42,8 @@ public:
     int getDefense() const { return defensePower; }
     int getSpeed() const { return speed; }
 
-    // å¾…æ”¹
-    // è¢«æ”»æ“Š
+    // «İ§ï
+    // ³Q§ğÀ»
     void takeDamage(int damage) {
         currentHP -= damage;
         if (currentHP < 0) currentHP = 0;
@@ -52,24 +52,24 @@ public:
     bool isAlive() const { return currentHP > 0; }
 
     virtual void print() const {
-        cout << "å¯µç‰©åç¨±ï¼š" << name << "\n";
-        cout << "å±¬æ€§ï¼š" << type << "\n";
-        cout << "ç­‰ç´šï¼š" << level << "\n";
-        cout << "ç¶“é©—å€¼ï¼š" << exp << "\n";
-        cout << "è¡€é‡ï¼š" << currentHP << "ï¼" << maxHP << "\n";
-        cout << "æ”»æ“ŠåŠ›ï¼š" << attackPower << "\n";
-        cout << "é˜²ç¦¦åŠ›ï¼š" << defensePower << "\n";
-        cout << "é€Ÿåº¦ï¼š" << speed << "\n\n";
+        cout << "Ãdª«¦WºÙ¡G" << name << "\n";
+        cout << "Äİ©Ê¡G" << type << "\n";
+        cout << "µ¥¯Å¡G" << level << "\n";
+        cout << "¸gÅç­È¡G" << exp << "\n";
+        cout << "¦å¶q¡G" << currentHP << "¡ş" << maxHP << "\n";
+        cout << "§ğÀ»¤O¡G" << attackPower << "\n";
+        cout << "¨¾¿m¤O¡G" << defensePower << "\n";
+        cout << "³t«×¡G" << speed << "\n\n";
     }   
 };
 
-// --------------------------- ç©å®¶å¯µç‰© ---------------------------
+// --------------------------- ª±®aÃdª« ---------------------------
 class PlayerPet : public Pet {
 public:
     PlayerPet(string name, string type)
         : Pet(name, type) {};
 
-    // æœªå®Œæˆï¼šæ‡‰åŒ…å«åœ¨ winã€loseè£¡é¢
+    // ¥¼§¹¦¨¡GÀ³¥]§t¦b win¡Blose¸Ì­±
     void levelAdjust() {
       if (exp >= exps[5]) {
         level = 6;
@@ -103,7 +103,7 @@ public:
       return (randomValue < escapeRate[level - 1]) ? true : false;
     }
 
-    // æœªå®Œæˆï¼šè¼¸è´è™•ç½®
+    // ¥¼§¹¦¨¡G¿éÄ¹³B¸m
     void win() {
       exp += 50;
       levelAdjust();
@@ -120,7 +120,7 @@ public:
     }
 };       
 
-// --------------------------- ç©å®¶é¡ ---------------------------
+// --------------------------- ª±®aÃş ---------------------------
 class Player {
 private:
     vector<PlayerPet*> pets;
@@ -129,7 +129,7 @@ public:
     void addPet(PlayerPet* newPet) { pets.push_back(newPet); }
     PlayerPet* getPet(int idx) { return pets[idx]; }
 
-    // å¾…å¯¦ä½œ
+    // «İ¹ê§@
     int findSecondMaxHP() {
       int firstMaxHP = 0, secondMaxHP = 0;
       for (int i = 0; i < 5; i++) {
@@ -219,27 +219,27 @@ public:
     }
 };
 
-// --------------------------- é›»è…¦å¯µç‰© ---------------------------
+// --------------------------- ¹q¸£Ãdª« ---------------------------
 class ComputerPet : public Pet {
 public:
     ComputerPet(string type, int maxHP, int attackPower, int defensePower, int speed)
         : Pet(type, maxHP, attackPower, defensePower, speed) {};
     
     void print() {
-        cout << "å¯µç‰©åç¨±ï¼š" << name << "\n";
-        cout << "å±¬æ€§ï¼š" << type << "\n";
-        cout << "è¡€é‡ï¼š" << currentHP << "ï¼" << maxHP << "\n";
-        cout << "æ”»æ“ŠåŠ›ï¼š" << attackPower << "\n";
-        cout << "é˜²ç¦¦åŠ›ï¼š" << defensePower << "\n";
-        cout << "é€Ÿåº¦ï¼š" << speed << "\n\n";
+        cout << "Ãdª«¦WºÙ¡G" << name << "\n";
+        cout << "Äİ©Ê¡G" << type << "\n";
+        cout << "¦å¶q¡G" << currentHP << "¡ş" << maxHP << "\n";
+        cout << "§ğÀ»¤O¡G" << attackPower << "\n";
+        cout << "¨¾¿m¤O¡G" << defensePower << "\n";
+        cout << "³t«×¡G" << speed << "\n\n";
     };
 };
 
-// --------------------------- éŠæˆ²é¡ ---------------------------
+// --------------------------- ¹CÀ¸Ãş ---------------------------
 class Game {
 private:
     int round = 1;
-    int lastAdvRd = -1;  // ç©å®¶ä¸Šä¸€æ¬¡ä½¿ç”¨é€²éšæ”»æ“Šçš„å›åˆ
+    int lastAdvRd = -1;  // ª±®a¤W¤@¦¸¨Ï¥Î¶i¶¥§ğÀ»ªº¦^¦X
     bool playerEscape = false;
     vector<PlayerPet*> playerPets;
     vector<ComputerPet*> computerPets;
@@ -266,7 +266,7 @@ public:
     }
 
     void startBattle(Player& player) {
-        // å…ˆæ‰¾å‡ºç©å®¶å¯µç‰©å€‹å±¬æ€§ç¬¬äºŒå¤§æ•¸å€¼ä½œç‚ºé›»è…¦å¯µç‰©æ•¸å€¼åŸºæº–
+        // ¥ı§ä¥Xª±®aÃdª«­ÓÄİ©Ê²Ä¤G¤j¼Æ­È§@¬°¹q¸£Ãdª«¼Æ­È°ò·Ç
         int maxHP = player.findSecondMaxHP();
         int attackPower = player.findSecondAttackPower();
         int defensePower = player.findSecondDefensePower();
@@ -279,8 +279,8 @@ public:
         addComputerPet(pet1ptr);
         addComputerPet(pet2ptr);
 
-        cout << "æ‚¨é‡åˆ°çš„å°æ‰‹å±¬æ€§ç‚ºï¼š" << getComputerPet(0)->getType() << "ã€" << getComputerPet(1)->getType() << "\n";
-        cout << "ä½ éœ€è¦æ´¾å‡ºå…©éš»å¯µç‰©æ‡‰æˆ°ï¼Œè«‹è¼¸å…¥æ¬²æ´¾å‡ºçš„ç¬¬ä¸€éš»å¯µç‰©åç¨±ï¼šï¼ˆæ­¤å¯µç‰©å°‡æœƒé è¨­ç‚ºç¬¬ä¸€å›åˆæˆ‘æ–¹çš„å‡ºæˆ°å¯µç‰©ï¼‰";
+        cout << "±z¹J¨ìªº¹ï¤âÄİ©Ê¬°¡G" << getComputerPet(0)->getType() << "¡B" << getComputerPet(1)->getType() << "\n";
+        cout << "§A»İ­n¬£¥X¨â°¦Ãdª«À³¾Ô¡A½Ğ¿é¤J±ı¬£¥Xªº²Ä¤@°¦Ãdª«¦WºÙ¡G¡]¦¹Ãdª«±N·|¹w³]¬°²Ä¤@¦^¦X§Ú¤èªº¥X¾ÔÃdª«¡^";
         string petName1;
         int pet1Idx = -1;
         string petName2;
@@ -297,10 +297,10 @@ public:
           }
           if(pet1Idx == -1)
           {
-            cout << "è¼¸å…¥ç„¡æ•ˆï¼æ‚¨ä¸¦æœªæ“æœ‰æ­¤åç¨±çš„å¯µç‰©ï¼Œè«‹é‡æ–°è¼¸å…¥ï¼š";
+            cout << "¿é¤JµL®Ä¡I±z¨Ã¥¼¾Ö¦³¦¹¦WºÙªºÃdª«¡A½Ğ­«·s¿é¤J¡G";
           }
         }
-        cout << "è«‹è¼¸å…¥æ¬²æ´¾å‡ºçš„ç¬¬äºŒéš»å¯µç‰©åç¨±ï¼š";
+        cout << "½Ğ¿é¤J±ı¬£¥Xªº²Ä¤G°¦Ãdª«¦WºÙ¡G";
         while(pet2Idx == -1)
         {
           cin >> petName2;
@@ -316,7 +316,7 @@ public:
               }
               else 
               {
-                cout << "æ‚¨æ–¹æ‰ä»¥é¸éæ­¤å¯µç‰©äº†å–”ï¼è«‹é‡æ–°è¼¸å…¥ï¼š";
+                cout << "±z¤è¤~¥H¿ï¹L¦¹Ãdª«¤F³á¡I½Ğ­«·s¿é¤J¡G";
                 sameAs1 = true;
                 break;
               }
@@ -324,7 +324,7 @@ public:
           }
           if(sameAs1 == false and pet2Idx == -1)
           {
-            cout << "è¼¸å…¥ç„¡æ•ˆï¼æ‚¨ä¸¦æœªæ“æœ‰æ­¤åç¨±çš„å¯µç‰©ï¼Œè«‹é‡æ–°è¼¸å…¥ï¼š";
+            cout << "¿é¤JµL®Ä¡I±z¨Ã¥¼¾Ö¦³¦¹¦WºÙªºÃdª«¡A½Ğ­«·s¿é¤J¡G";
           }
         }
 
@@ -336,7 +336,7 @@ public:
         PlayerPet* playerPet = getPlayerPet(idxPlayer);
         ComputerPet* computerPet = getComputerPet(idxComputer);
 
-        cout << "\n\nå°æˆ°é–‹å§‹ï¼" << endl;
+        cout << "\n\n¹ï¾Ô¶}©l¡I" << endl;
 
         bool playerStillIn = true;
 
@@ -344,21 +344,21 @@ public:
         and (getComputerPet(0)->isAlive() or getComputerPet(1)->isAlive())
         and !playerEscape)
         {
-          cout << "\n\n\nRound " << round << "\n" << "é›™æ–¹åŒæ™‚å‡ºæ‹›ï¼\n";
-          cout << "æ­¤å›åˆæˆ‘æ–¹æ´¾å‡ºâ€”â€”" << "\n";
+          cout << "\n\n\nRound " << round << "\n" << "Âù¤è¦P®É¥X©Û¡I\n";
+          cout << "¦¹¦^¦X§Ú¤è¬£¥X¡X¡X" << "\n";
           playerPet->print();
-          cout << "æ­¤å›åˆæ•µæ–¹æ´¾å‡ºâ€”â€”" << "\n";
+          cout << "¦¹¦^¦X¼Ä¤è¬£¥X¡X¡X" << "\n";
           computerPet->print();
-          cout << "è«‹é¸æ“‡æ‚¨æ¬²ç™¼èµ·çš„è¡Œå‹•ï¼ˆä»¥æ•¸å­—å›è¦†ï¼‰ï¼š\n1.æ™®é€šæ”»æ“Š\n2.é€²éšæ”»æ“Š ";
+          cout << "½Ğ¿ï¾Ü±z±ıµo°_ªº¦æ°Ê¡]¥H¼Æ¦r¦^ÂĞ¡^¡G\n1.´¶³q§ğÀ»\n2.¶i¶¥§ğÀ» ";
           if(lastAdvRd == -1 or (lastAdvRd != -1 and round - lastAdvRd >= 3))
           {
-            cout << "ï¼ˆæ­¤å›åˆå¯ä½¿ç”¨ï¼‰\n";
+            cout << "¡]¦¹¦^¦X¥i¨Ï¥Î¡^\n";
           }
           else
           {
-            cout << "ï¼ˆæ­¤å›åˆä¸é–‹æ”¾ï¼‰\n";
+            cout << "¡]¦¹¦^¦X¤£¶}©ñ¡^\n";
           }
-          cout << "3.é˜²ç¦¦\n4.é€ƒè·‘\n";
+          cout << "3.¨¾¿m\n4.°k¶]\n";
           string playerChoice;
           string computerChoice;
           string allComChoices[2] = {"1", "3"};
@@ -368,184 +368,184 @@ public:
           {
             cin >> playerChoice;
 
-            if(playerChoice == "1")  // ç©å®¶é¸æ“‡æ™®é€šæ”»æ“Š
+            if(playerChoice == "1")  // ª±®a¿ï¾Ü´¶³q§ğÀ»
             {
               if(computerChoice == "1")
               {
-                cout << "æ•µæ–¹ä¹Ÿä½¿å‡ºäº†æ”»æ“Šï¼\n";
+                cout << "¼Ä¤è¤]¨Ï¥X¤F§ğÀ»¡I\n";
                 playerPet->takeDamage(computerPet->getAttackPower());
-                cout << "é­å—æ•µæ–¹æ”»æ“Šï¼æˆ‘æ–¹è¡€é‡æ¸›" << computerPet->getAttackPower() << "\n";
+                cout << "¾D¨ü¼Ä¤è§ğÀ»¡I§Ú¤è¦å¶q´î" << computerPet->getAttackPower() << "\n";
                 computerPet->takeDamage(playerPet->getAttackPower());
-                cout << "å°æ–¹ä¹Ÿå› é­å—æˆ‘æ–¹æ”»æ“Šè¡€é‡æ¸›" << playerPet->getAttackPower() << "\n";
+                cout << "¹ï¤è¤]¦]¾D¨ü§Ú¤è§ğÀ»¦å¶q´î" << playerPet->getAttackPower() << "\n";
               }
               else
               {
-                cout << "æ•µæ–¹é¸æ“‡é˜²ç¦¦ï¼\n";
+                cout << "¼Ä¤è¿ï¾Ü¨¾¿m¡I\n";
                 if(computerPet->getDefense() >= playerPet->getAttackPower())
                 {
-                  cout << "æ•µæ–¹æ“‹æ‰äº†ä½ çš„æ”»æ“Šï¼Œå› æ­¤æ¯«é«®ç„¡å‚·ã€‚\n";
+                  cout << "¼Ä¤è¾×±¼¤F§Aªº§ğÀ»¡A¦]¦¹²@¾vµL¶Ë¡C\n";
                 }
                 else
                 {
                   computerPet->takeDamage(playerPet->getAttackPower() - computerPet->getDefense());
-                  cout << "æ•µæ–¹é­å—æˆ‘æ–¹æ”»æ“Šï¼Œè¡€é‡æ¸›" << playerPet->getAttackPower() - computerPet->getDefense() << "\n";
+                  cout << "¼Ä¤è¾D¨ü§Ú¤è§ğÀ»¡A¦å¶q´î" << playerPet->getAttackPower() - computerPet->getDefense() << "\n";
                 }
               }
               break;
             }
-            else if (playerChoice == "2" and (lastAdvRd == -1 or (lastAdvRd != -1 and round - lastAdvRd >= 3)))  // ç©å®¶é¸æ“‡é€²éšæ”»æ“Š
+            else if (playerChoice == "2" and (lastAdvRd == -1 or (lastAdvRd != -1 and round - lastAdvRd >= 3)))  // ª±®a¿ï¾Ü¶i¶¥§ğÀ»
             {
               if(computerChoice == "1")
               {
-                cout << "æ•µæ–¹ä¹Ÿä½¿å‡ºäº†æ”»æ“Šï¼\n";
+                cout << "¼Ä¤è¤]¨Ï¥X¤F§ğÀ»¡I\n";
                 playerPet->takeDamage(computerPet->getAttackPower());
-                cout << "é­å—æ•µæ–¹æ”»æ“Šï¼æˆ‘æ–¹è¡€é‡æ¸›" << computerPet->getAttackPower() << "\n";
+                cout << "¾D¨ü¼Ä¤è§ğÀ»¡I§Ú¤è¦å¶q´î" << computerPet->getAttackPower() << "\n";
 
-                if (playerPet->getType() == "é‡‘" and computerPet->getType() == "æœ¨") {
+                if (playerPet->getType() == "ª÷" and computerPet->getType() == "¤ì") {
                   computerPet->takeDamage((playerPet->getAttackPower()) * 2);
-                  cout << "å› ç‚ºæˆ‘æ–¹ä½¿å‡ºé€²éšæ”»æ“Šä¸”å±¬æ€§ç›¸å‰‹ï¼Œå°æ–¹é­å—æˆ‘æ–¹æ”»æ“Šè¡€é‡æ¸›" << (playerPet->getAttackPower()) * 2 << "\n";
+                  cout << "¦]¬°§Ú¤è¨Ï¥X¶i¶¥§ğÀ»¥BÄİ©Ê¬Û«g¡A¹ï¤è¾D¨ü§Ú¤è§ğÀ»¦å¶q´î" << (playerPet->getAttackPower()) * 2 << "\n";
                 }
-                else if (playerPet->getType() == "æœ¨" and computerPet->getType() == "åœŸ") {
+                else if (playerPet->getType() == "¤ì" and computerPet->getType() == "¤g") {
                   computerPet->takeDamage((playerPet->getAttackPower()) * 2);
-                  cout << "å› ç‚ºæˆ‘æ–¹ä½¿å‡ºé€²éšæ”»æ“Šä¸”å±¬æ€§ç›¸å‰‹ï¼Œå°æ–¹é­å—æˆ‘æ–¹æ”»æ“Šè¡€é‡æ¸›" << (playerPet->getAttackPower()) * 2 << "\n";
+                  cout << "¦]¬°§Ú¤è¨Ï¥X¶i¶¥§ğÀ»¥BÄİ©Ê¬Û«g¡A¹ï¤è¾D¨ü§Ú¤è§ğÀ»¦å¶q´î" << (playerPet->getAttackPower()) * 2 << "\n";
                 }
-                else if (playerPet->getType() == "æ°´" and computerPet->getType() == "ç«") {
+                else if (playerPet->getType() == "¤ô" and computerPet->getType() == "¤õ") {
                   computerPet->takeDamage((playerPet->getAttackPower()) * 2);
-                  cout << "å› ç‚ºæˆ‘æ–¹ä½¿å‡ºé€²éšæ”»æ“Šä¸”å±¬æ€§ç›¸å‰‹ï¼Œå°æ–¹é­å—æˆ‘æ–¹æ”»æ“Šè¡€é‡æ¸›" << (playerPet->getAttackPower()) * 2 << "\n";
+                  cout << "¦]¬°§Ú¤è¨Ï¥X¶i¶¥§ğÀ»¥BÄİ©Ê¬Û«g¡A¹ï¤è¾D¨ü§Ú¤è§ğÀ»¦å¶q´î" << (playerPet->getAttackPower()) * 2 << "\n";
                 }
-                else if (playerPet->getType() == "ç«" and computerPet->getType() == "é‡‘") {
+                else if (playerPet->getType() == "¤õ" and computerPet->getType() == "ª÷") {
                   computerPet->takeDamage((playerPet->getAttackPower()) * 2);
-                  cout << "å› ç‚ºæˆ‘æ–¹ä½¿å‡ºé€²éšæ”»æ“Šä¸”å±¬æ€§ç›¸å‰‹ï¼Œå°æ–¹é­å—æˆ‘æ–¹æ”»æ“Šè¡€é‡æ¸›" << (playerPet->getAttackPower()) * 2 << "\n";
+                  cout << "¦]¬°§Ú¤è¨Ï¥X¶i¶¥§ğÀ»¥BÄİ©Ê¬Û«g¡A¹ï¤è¾D¨ü§Ú¤è§ğÀ»¦å¶q´î" << (playerPet->getAttackPower()) * 2 << "\n";
                 }
-                else if (playerPet->getType() == "åœŸ" and computerPet->getType() == "æ°´") {
+                else if (playerPet->getType() == "¤g" and computerPet->getType() == "¤ô") {
                   computerPet->takeDamage((playerPet->getAttackPower()) * 2);
-                  cout << "å› ç‚ºæˆ‘æ–¹ä½¿å‡ºé€²éšæ”»æ“Šä¸”å±¬æ€§ç›¸å‰‹ï¼Œå°æ–¹é­å—æˆ‘æ–¹æ”»æ“Šè¡€é‡æ¸›" << (playerPet->getAttackPower()) * 2 << "\n";
+                  cout << "¦]¬°§Ú¤è¨Ï¥X¶i¶¥§ğÀ»¥BÄİ©Ê¬Û«g¡A¹ï¤è¾D¨ü§Ú¤è§ğÀ»¦å¶q´î" << (playerPet->getAttackPower()) * 2 << "\n";
                 }
                 else {
                   computerPet->takeDamage((playerPet->getAttackPower()) * 2);
-                  cout << "å› ç‚ºæˆ‘æ–¹ä½¿å‡ºé€²éšæ”»æ“Šï¼Œå°æ–¹é­å—æˆ‘æ–¹æ”»æ“Šè¡€é‡æ¸›" << (playerPet->getAttackPower()) * 1.5 << "\n";
+                  cout << "¦]¬°§Ú¤è¨Ï¥X¶i¶¥§ğÀ»¡A¹ï¤è¾D¨ü§Ú¤è§ğÀ»¦å¶q´î" << (playerPet->getAttackPower()) * 1.5 << "\n";
                 }
               }
               else
               {
-                cout << "æ•µæ–¹é¸æ“‡é˜²ç¦¦ï¼\n";
+                cout << "¼Ä¤è¿ï¾Ü¨¾¿m¡I\n";
 
-                if (playerPet->getType() == "é‡‘" and computerPet->getType() == "æœ¨") {
+                if (playerPet->getType() == "ª÷" and computerPet->getType() == "¤ì") {
                   if(computerPet->getDefense() < ((playerPet->getAttackPower()) * 2)) {
                     computerPet->takeDamage((playerPet->getAttackPower()) * 2 - computerPet->getDefense());
-                    cout << "å› ç‚ºæˆ‘æ–¹ä½¿å‡ºé€²éšæ”»æ“Šä¸”å±¬æ€§ç›¸å‰‹ï¼Œå°æ–¹é­å—æˆ‘æ–¹æ”»æ“Šè¡€é‡æ¸›" << (playerPet->getAttackPower()) * 2 - computerPet->getDefense() << "\n";
+                    cout << "¦]¬°§Ú¤è¨Ï¥X¶i¶¥§ğÀ»¥BÄİ©Ê¬Û«g¡A¹ï¤è¾D¨ü§Ú¤è§ğÀ»¦å¶q´î" << (playerPet->getAttackPower()) * 2 - computerPet->getDefense() << "\n";
                   }
                   else
                   {
-                    cout << "å°æ–¹æ“‹æ‰äº†ä½ çš„é€²éšæ”»æ“Šè€Œæ¯«é«®ç„¡å‚·\n";
+                    cout << "¹ï¤è¾×±¼¤F§Aªº¶i¶¥§ğÀ»¦Ó²@¾vµL¶Ë\n";
                   }
                 }
-                else if (playerPet->getType() == "æœ¨" and computerPet->getType() == "åœŸ") {
+                else if (playerPet->getType() == "¤ì" and computerPet->getType() == "¤g") {
                   if(computerPet->getDefense() < ((playerPet->getAttackPower()) * 2)) {
                     computerPet->takeDamage((playerPet->getAttackPower()) * 2 - computerPet->getDefense());
-                    cout << "å› ç‚ºæˆ‘æ–¹ä½¿å‡ºé€²éšæ”»æ“Šä¸”å±¬æ€§ç›¸å‰‹ï¼Œå°æ–¹é­å—æˆ‘æ–¹æ”»æ“Šè¡€é‡æ¸›" << (playerPet->getAttackPower()) * 2 - computerPet->getDefense() << "\n";
+                    cout << "¦]¬°§Ú¤è¨Ï¥X¶i¶¥§ğÀ»¥BÄİ©Ê¬Û«g¡A¹ï¤è¾D¨ü§Ú¤è§ğÀ»¦å¶q´î" << (playerPet->getAttackPower()) * 2 - computerPet->getDefense() << "\n";
                   }
                   else
                   {
-                    cout << "å°æ–¹æ“‹æ‰äº†ä½ çš„é€²éšæ”»æ“Šè€Œæ¯«é«®ç„¡å‚·\n";
+                    cout << "¹ï¤è¾×±¼¤F§Aªº¶i¶¥§ğÀ»¦Ó²@¾vµL¶Ë\n";
                   }
                 }
-                else if (playerPet->getType() == "æ°´" and computerPet->getType() == "ç«") {
+                else if (playerPet->getType() == "¤ô" and computerPet->getType() == "¤õ") {
                   if(computerPet->getDefense() < ((playerPet->getAttackPower()) * 2)) {
                     computerPet->takeDamage((playerPet->getAttackPower()) * 2 - computerPet->getDefense());
-                    cout << "å› ç‚ºæˆ‘æ–¹ä½¿å‡ºé€²éšæ”»æ“Šä¸”å±¬æ€§ç›¸å‰‹ï¼Œå°æ–¹é­å—æˆ‘æ–¹æ”»æ“Šè¡€é‡æ¸›" << (playerPet->getAttackPower()) * 2 - computerPet->getDefense() << "\n";
+                    cout << "¦]¬°§Ú¤è¨Ï¥X¶i¶¥§ğÀ»¥BÄİ©Ê¬Û«g¡A¹ï¤è¾D¨ü§Ú¤è§ğÀ»¦å¶q´î" << (playerPet->getAttackPower()) * 2 - computerPet->getDefense() << "\n";
                   }
                   else
                   {
-                    cout << "å°æ–¹æ“‹æ‰äº†ä½ çš„é€²éšæ”»æ“Šè€Œæ¯«é«®ç„¡å‚·\n";
+                    cout << "¹ï¤è¾×±¼¤F§Aªº¶i¶¥§ğÀ»¦Ó²@¾vµL¶Ë\n";
                   }
                 }
-                else if (playerPet->getType() == "ç«" and computerPet->getType() == "é‡‘") {
+                else if (playerPet->getType() == "¤õ" and computerPet->getType() == "ª÷") {
                   if(computerPet->getDefense() < ((playerPet->getAttackPower()) * 2)) {
                     computerPet->takeDamage((playerPet->getAttackPower()) * 2 - computerPet->getDefense());
-                    cout << "å› ç‚ºæˆ‘æ–¹ä½¿å‡ºé€²éšæ”»æ“Šä¸”å±¬æ€§ç›¸å‰‹ï¼Œå°æ–¹é­å—æˆ‘æ–¹æ”»æ“Šè¡€é‡æ¸›" << (playerPet->getAttackPower()) * 2 - computerPet->getDefense() << "\n";
+                    cout << "¦]¬°§Ú¤è¨Ï¥X¶i¶¥§ğÀ»¥BÄİ©Ê¬Û«g¡A¹ï¤è¾D¨ü§Ú¤è§ğÀ»¦å¶q´î" << (playerPet->getAttackPower()) * 2 - computerPet->getDefense() << "\n";
                   }
                   else
                   {
-                    cout << "å°æ–¹æ“‹æ‰äº†ä½ çš„é€²éšæ”»æ“Šè€Œæ¯«é«®ç„¡å‚·\n";
+                    cout << "¹ï¤è¾×±¼¤F§Aªº¶i¶¥§ğÀ»¦Ó²@¾vµL¶Ë\n";
                   }
                 }
-                else if (playerPet->getType() == "åœŸ" and computerPet->getType() == "æ°´") {
+                else if (playerPet->getType() == "¤g" and computerPet->getType() == "¤ô") {
                   if(computerPet->getDefense() < ((playerPet->getAttackPower()) * 2)) {
                     computerPet->takeDamage((playerPet->getAttackPower()) * 2 - computerPet->getDefense());
-                    cout << "å› ç‚ºæˆ‘æ–¹ä½¿å‡ºé€²éšæ”»æ“Šä¸”å±¬æ€§ç›¸å‰‹ï¼Œå°æ–¹é­å—æˆ‘æ–¹æ”»æ“Šè¡€é‡æ¸›" << (playerPet->getAttackPower()) * 2 - computerPet->getDefense() << "\n";
+                    cout << "¦]¬°§Ú¤è¨Ï¥X¶i¶¥§ğÀ»¥BÄİ©Ê¬Û«g¡A¹ï¤è¾D¨ü§Ú¤è§ğÀ»¦å¶q´î" << (playerPet->getAttackPower()) * 2 - computerPet->getDefense() << "\n";
                   }
                   else
                   {
-                    cout << "å°æ–¹æ“‹æ‰äº†ä½ çš„é€²éšæ”»æ“Šè€Œæ¯«é«®ç„¡å‚·\n";
+                    cout << "¹ï¤è¾×±¼¤F§Aªº¶i¶¥§ğÀ»¦Ó²@¾vµL¶Ë\n";
                   }
                 }
                 else {
                   if(computerPet->getDefense() < ((playerPet->getAttackPower()) * 1.5)) {
                     computerPet->takeDamage((playerPet->getAttackPower()) * 1.5 - computerPet->getDefense());
-                    cout << "å› ç‚ºæˆ‘æ–¹ä½¿å‡ºé€²éšæ”»æ“Šï¼Œå°æ–¹é­å—æˆ‘æ–¹æ”»æ“Šè¡€é‡æ¸›" << (playerPet->getAttackPower()) * 1.5 - computerPet->getDefense() << "\n";
+                    cout << "¦]¬°§Ú¤è¨Ï¥X¶i¶¥§ğÀ»¡A¹ï¤è¾D¨ü§Ú¤è§ğÀ»¦å¶q´î" << (playerPet->getAttackPower()) * 1.5 - computerPet->getDefense() << "\n";
                   }
                   else
                   {
-                    cout << "å°æ–¹æ“‹æ‰äº†ä½ çš„é€²éšæ”»æ“Šè€Œæ¯«é«®ç„¡å‚·\n";
+                    cout << "¹ï¤è¾×±¼¤F§Aªº¶i¶¥§ğÀ»¦Ó²@¾vµL¶Ë\n";
                   }
                 }
               }
               lastAdvRd = round;
               break;
             }
-            else if (playerChoice == "3")  // ç©å®¶é¸æ“‡é˜²ç¦¦
+            else if (playerChoice == "3")  // ª±®a¿ï¾Ü¨¾¿m
             {
               if(computerChoice == "1")
               {
-                cout << "æ•µæ–¹ä½¿å‡ºäº†æ”»æ“Šï¼\n";
+                cout << "¼Ä¤è¨Ï¥X¤F§ğÀ»¡I\n";
                 if(playerPet->getDefense() >= computerPet->getAttackPower())
                 {
-                  cout << "ä½ æˆåŠŸæ“‹æ‰æ•µæ–¹çš„æ”»æ“Šï¼Œå› æ­¤æ¯«é«®ç„¡å‚·ã€‚\n";
+                  cout << "§A¦¨¥\¾×±¼¼Ä¤èªº§ğÀ»¡A¦]¦¹²@¾vµL¶Ë¡C\n";
                 }
                 else
                 {
                   playerPet->takeDamage(computerPet->getAttackPower() - playerPet->getDefense());
-                  cout << "æˆ‘æ–¹å› é­æ•µæ–¹æ”»æ“Šï¼Œè¡€é‡æ¸›" << computerPet->getAttackPower() - playerPet->getDefense() << "\n";
+                  cout << "§Ú¤è¦]¾D¼Ä¤è§ğÀ»¡A¦å¶q´î" << computerPet->getAttackPower() - playerPet->getDefense() << "\n";
                 }                
               }
               else
               {
-                cout << "æ•µæ–¹ä¹Ÿé¸æ“‡é˜²ç¦¦ï¼Œæ­¤å›åˆå®‰ç„¶åº¦éï¼\n";
+                cout << "¼Ä¤è¤]¿ï¾Ü¨¾¿m¡A¦¹¦^¦X¦wµM«×¹L¡I\n";
               }
               break;
             }
-            else if (playerChoice == "4")  // ç©å®¶é¸æ“‡é€ƒè·‘
+            else if (playerChoice == "4")  // ª±®a¿ï¾Ü°k¶]
             {
               if(computerChoice == "1") {
                 if(playerPet->escapeSuccess()) {
                   playerEscape = true;
-                  cout << "æ•µæ–¹ä½¿å‡ºæ”»æ“Šï¼\nä½†æˆ‘æ–¹é€ƒè·‘æˆåŠŸå› è€Œæ¯«é«®ç„¡å‚·ï¼Œé€€å‡ºæˆ°é¬¥ã€‚\n";
+                  cout << "¼Ä¤è¨Ï¥X§ğÀ»¡I\n¦ı§Ú¤è°k¶]¦¨¥\¦]¦Ó²@¾vµL¶Ë¡A°h¥X¾Ô°«¡C\n";
                 }
                 else {
-                  cout << "æ•µæ–¹ä½¿å‡ºæ”»æ“Šï¼\nä½†æˆ‘æ–¹é€ƒè·‘å¤±æ•—è€Œæ­£ä¸­å°æ–¹æ”»æ“Šï¼Œè¡€é‡æ¸›" << computerPet->getAttackPower() << "\n";
+                  cout << "¼Ä¤è¨Ï¥X§ğÀ»¡I\n¦ı§Ú¤è°k¶]¥¢±Ñ¦Ó¥¿¤¤¹ï¤è§ğÀ»¡A¦å¶q´î" << computerPet->getAttackPower() << "\n";
                   playerPet->takeDamage(computerPet->getAttackPower());
                 }
               }
               else {
                 playerEscape = true;
-                cout << "æ•µæ–¹é¸æ“‡é˜²ç¦¦ï¼\næˆ‘æ–¹æˆåŠŸé€ƒè·‘ï¼Œé€€å‡ºæˆ°é¬¥ã€‚\n";
+                cout << "¼Ä¤è¿ï¾Ü¨¾¿m¡I\n§Ú¤è¦¨¥\°k¶]¡A°h¥X¾Ô°«¡C\n";
               }
               break;
             }
             else
             {
-              cout << "æ“ä½œç„¡æ•ˆï¼Œè«‹é‡æ–°è¼¸å…¥ï¼š";
+              cout << "¾Ş§@µL®Ä¡A½Ğ­«·s¿é¤J¡G";
             }
           }
 
-          cout << "ç¶“éæ­¤å›åˆï¼Œé›™æ–¹ç¾åœ¨çš„ç‹€æ…‹ç‚ºï¼š\n";
+          cout << "¸g¹L¦¹¦^¦X¡AÂù¤è²{¦bªºª¬ºA¬°¡G\n";
           playerPet->print();
           computerPet->print();
 
           if(playerEscape)
           {
-           cout << "æˆ‘æ–¹é€ƒè·‘æˆåŠŸï¼æˆ°é¬¥çµæŸã€‚\n";
+           cout << "§Ú¤è°k¶]¦¨¥\¡I¾Ô°«µ²§ô¡C\n";
            if(!(getPlayerPet(0)->isAlive())) {
              getPlayerPet(0)->die();
            }
@@ -556,16 +556,16 @@ public:
            break;
           }
 
-          if(!playerPet->isAlive())  // æˆ‘æ–¹ç¾åœ¨é€™éš»å·²æˆ°æ•—
+          if(!playerPet->isAlive())  // §Ú¤è²{¦b³o°¦¤w¾Ô±Ñ
           {
             if(!getPlayerPet(0)->isAlive() and !getPlayerPet(1)->isAlive()) {
               if(getComputerPet(0)->isAlive() or getComputerPet(1)->isAlive()) {
-                cout << "æ‚¨çš„å…©éš»å¯µç‰©å‡æˆ°æ•—ï¼Œæ•µæ–¹è´å¾—æ­¤æ¬¡æˆ°é¬¥çš„å‹åˆ©ï¼\n";
+                cout << "±zªº¨â°¦Ãdª«§¡¾Ô±Ñ¡A¼Ä¤èÄ¹±o¦¹¦¸¾Ô°«ªº³Ó§Q¡I\n";
                 getPlayerPet(0)->die();
                 getPlayerPet(1)->die();
               }
               else {
-                cout << "é›™æ–¹çš„å¯µç‰©å…¨æˆ°æ•—ï¼Œæ­¤æ¬¡æˆ°é¬¥å¹³æ‰‹ï¼\n";
+                cout << "Âù¤èªºÃdª«¥ş¾Ô±Ñ¡A¦¹¦¸¾Ô°«¥­¤â¡I\n";
                 getPlayerPet(0)->die();
                 getPlayerPet(1)->die();
               }
@@ -573,7 +573,7 @@ public:
             }
             else
             {
-              cout << "æ‚¨çš„è©²éš»å¯µç‰©å·²æˆ°æ•—ï¼Œæˆ‘æ–¹åœ¨ä¸‹ä¸€å›åˆå°‡æ´¾å‡ºå¦ä¸€éš»å¯µç‰©ä¸Šå ´ï¼\n";
+              cout << "±zªº¸Ó°¦Ãdª«¤w¾Ô±Ñ¡A§Ú¤è¦b¤U¤@¦^¦X±N¬£¥X¥t¤@°¦Ãdª«¤W³õ¡I\n";
               if(idxPlayer == 0)
               {
                 playerPet = getPlayerPet(1);
@@ -586,10 +586,10 @@ public:
               }
             }
           }
-          else {  // æˆ‘æ–¹ç¾åœ¨é€™éš»é‚„æ´»è‘—
+          else {  // §Ú¤è²{¦b³o°¦ÁÙ¬¡µÛ
             if (!getComputerPet(0)->isAlive() and !getComputerPet(1)->isAlive())
             {
-              cout << "æ•µæ–¹å…©éš»å¯µç‰©å‡è¢«æ‰“æ•—ï¼Œæ­å–œæ‚¨ç²å¾—æ­¤æ¬¡æˆ°é¬¥çš„å‹åˆ©ï¼\n";
+              cout << "¼Ä¤è¨â°¦Ãdª«§¡³Q¥´±Ñ¡A®¥³ß±zÀò±o¦¹¦¸¾Ô°«ªº³Ó§Q¡I\n";
               if(getPlayerPet(0)->isAlive()) {
                 getPlayerPet(0)->win();
               }
@@ -607,47 +607,47 @@ public:
             }
             else if(idxPlayer == 0 and getPlayerPet(1)->isAlive())
             {
-              cout << "æ‚¨æ˜¯å¦æ¬²åœ¨ä¸‹å›åˆæ›´æ›ä¸Šå ´å¯µç‰©ï¼Ÿ ï¼ˆyes / noï¼‰";
+              cout << "±z¬O§_±ı¦b¤U¦^¦X§ó´«¤W³õÃdª«¡H ¡]yes / no¡^";
               string change;
               while(true)
               {
                 cin >> change;
                 if(change == "yes")
                 {
-                  cout << "æˆ‘æ–¹åœ¨ä¸‹å›åˆå°‡æ›´æ›å¯µç‰©ä¸Šå ´ï¼\n";
+                  cout << "§Ú¤è¦b¤U¦^¦X±N§ó´«Ãdª«¤W³õ¡I\n";
                   idxPlayer = 1;
                   playerPet = getPlayerPet(1);
                   break;
                 }
                 else if(change == "no")
                 {
-                  cout << "æˆ‘æ–¹åœ¨ä¸‹å›åˆå°‡ç¶­æŒåŸå¯µç‰©ä¸Šå ´ï¼\n";
+                  cout << "§Ú¤è¦b¤U¦^¦X±Nºû«ù­ìÃdª«¤W³õ¡I\n";
                   break;
                 }
                 else
                 {
-                  cout << "è¼¸å…¥ç„¡æ•ˆï¼è«‹é‡æ–°è¼¸å…¥ï¼š";
+                  cout << "¿é¤JµL®Ä¡I½Ğ­«·s¿é¤J¡G";
                 }
               }
             }
             else if(idxPlayer == 1 and getPlayerPet(0)->isAlive())
             {
-              cout << "æ‚¨æ˜¯å¦æ¬²åœ¨ä¸‹å›åˆæ›´æ›ä¸Šå ´å¯µç‰©ï¼Ÿ ï¼ˆyes / noï¼‰";
+              cout << "±z¬O§_±ı¦b¤U¦^¦X§ó´«¤W³õÃdª«¡H ¡]yes / no¡^";
               string change;
               while(true) {
                 cin >> change;
                 if(change == "yes") {
-                  cout << "æˆ‘æ–¹åœ¨ä¸‹å›åˆå°‡æ›´æ›å¯µç‰©ä¸Šå ´ï¼\n";
+                  cout << "§Ú¤è¦b¤U¦^¦X±N§ó´«Ãdª«¤W³õ¡I\n";
                   idxPlayer = 0;
                   playerPet = getPlayerPet(0);
                   break;
                 }
                 else if(change == "no"){
-                  cout << "æˆ‘æ–¹ä¸‹å›åˆå°‡ç¶­æŒåŸå¯µç‰©ä¸Šå ´ï¼\n";
+                  cout << "§Ú¤è¤U¦^¦X±Nºû«ù­ìÃdª«¤W³õ¡I\n";
                   break;
                 }
                 else{
-                  cout << "è¼¸å…¥ç„¡æ•ˆï¼è«‹é‡æ–°è¼¸å…¥ï¼š";
+                  cout << "¿é¤JµL®Ä¡I½Ğ­«·s¿é¤J¡G";
                 }
               }
             }
@@ -658,7 +658,7 @@ public:
           {
             if(idxComputer == 0)
             {
-              cout << "æ•µæ–¹æ­¤éš»å¯µç‰©å·²è¢«æ‰“è¢«ï¼Œä¸‹å›åˆå°‡æ´¾å‡ºç¬¬äºŒéš»å¯µç‰©æ‡‰æˆ°ï¼\n";
+              cout << "¼Ä¤è¦¹°¦Ãdª«¤w³Q¥´³Q¡A¤U¦^¦X±N¬£¥X²Ä¤G°¦Ãdª«À³¾Ô¡I\n";
               idxComputer = 1;
               computerPet = getComputerPet(1);
             }
@@ -668,32 +668,32 @@ public:
     }
 };
 
-// --------------------------- ä¸»ç¨‹å¼ ---------------------------
+// --------------------------- ¥Dµ{¦¡ ---------------------------
 int main() {
-    srand(static_cast<unsigned>(time(0))); // è¨­å®šéš¨æ©Ÿç¨®å­
+    srand(static_cast<unsigned>(time(0))); // ³]©wÀH¾÷ºØ¤l
 
     Player player;
-    PlayerPet pet1("é‡‘å±¬æ€§å¯µç‰©", "é‡‘");
-    PlayerPet pet2("æœ¨å±¬æ€§å¯µç‰©", "æœ¨");
-    PlayerPet pet3("æ°´å±¬æ€§å¯µç‰©", "æ°´");
-    PlayerPet pet4("ç«å±¬æ€§å¯µç‰©", "ç«");
-    PlayerPet pet5("åœŸå±¬æ€§å¯µç‰©", "åœŸ");
+    PlayerPet pet1("ª÷Äİ©ÊÃdª«", "ª÷");
+    PlayerPet pet2("¤ìÄİ©ÊÃdª«", "¤ì");
+    PlayerPet pet3("¤ôÄİ©ÊÃdª«", "¤ô");
+    PlayerPet pet4("¤õÄİ©ÊÃdª«", "¤õ");
+    PlayerPet pet5("¤gÄİ©ÊÃdª«", "¤g");
     player.addPet(&pet1);
     player.addPet(&pet2);
     player.addPet(&pet3);
     player.addPet(&pet4);
     player.addPet(&pet5);
 
-    cout << "æ­¡è¿é€²å…¥éŠæˆ²ï¼\n";
+    cout << "Åwªï¶i¤J¹CÀ¸¡I\n";
 
 
     while (true) {
-        cout << "\n\n\nä»¥ä¸‹æ˜¯æ‚¨ç›®å‰æ“æœ‰çš„å¯µç‰©è³‡è¨Šï¼š\n";
+        cout << "\n\n\n¥H¤U¬O±z¥Ø«e¾Ö¦³ªºÃdª«¸ê°T¡G\n";
         for (int i = 0; i < 5; i++) {
             player.getPet(i)->print();
         }
         while(true) {      
-          cout << "ä½ æº–å‚™å¥½åŠ å…¥æ–°æˆ°é¬¥äº†å—ï¼Ÿï¼ˆyes / noï¼‰\n";
+          cout << "§A·Ç³Æ¦n¥[¤J·s¾Ô°«¤F¶Ü¡H¡]yes / no¡^\n";
           string ans;
           cin >> ans;
           if (ans == "yes") {
@@ -703,7 +703,7 @@ int main() {
           } else if (ans == "no") {
               continue;
           } else {
-              cout << "è¼¸å…¥ç„¡æ•ˆï¼è«‹é‡æ–°è¼¸å…¥ã€‚\n";
+              cout << "¿é¤JµL®Ä¡I½Ğ­«·s¿é¤J¡C\n";
               continue;
           }
         }
@@ -712,4 +712,4 @@ int main() {
     return 0;
 }
 
-// å¦‚æœçœ‹ä¸æ‡‚å†è·Ÿæˆ‘èªªå—šå—š
+// ¦pªG¬İ¤£À´¦A¸ò§Ú»¡¶ã¶ã
