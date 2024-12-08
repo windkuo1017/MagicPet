@@ -15,7 +15,7 @@ using namespace std;
 // Pet 建構函數(玩家的)
 Pet::Pet(string name, string type)
     : name(name), type(type), maxHP(maxHPs[0]), currentHP(maxHPs[0]), attackPower(attackPowers[0]), defensePower(defensePowers[0]), speed(speeds[0]), level(1), exp(0) {
-        Skill *skill1 = new Skill(0, "一般攻擊", 90, type);
+        Skill *skill1 = new Skill(0, "一般攻擊", 95, type);
         skills.push_back(skill1);
 
         Skill *skill2 = new Skill(3, "特殊攻擊", 50, type);
@@ -26,10 +26,10 @@ Pet::Pet(string name, string type)
 // Pet 建構函數(電腦的)
 Pet::Pet(string type, int maxHP, int attackPower, int defensePower, int speed)
     : name("系統"), type(type), maxHP(maxHPs[0]), currentHP(maxHPs[0]), attackPower(attackPowers[0]), defensePower(defensePowers[0]), speed(speeds[0]) {
-        Skill *skill1 = new Skill(0, "一般攻擊", 50, type);
+        Skill *skill1 = new Skill(0, "一般攻擊", 90, type);
         skills.push_back(skill1);
 
-        Skill *skill2 = new Skill(3, "特殊攻擊", 40, type);
+        Skill *skill2 = new Skill(3, "特殊攻擊", 50, type);
         skills.push_back(skill2);
     }
 

@@ -73,12 +73,13 @@ void BattleSystem::bothTakingAction(PlayerPet*& playerPet, ComputerPet* computer
         cout << ">> " ;
         string option;
         cin >> option;
+        int size = option.size();
 
         try {
             playerChoice = stoi(option); // Attempt to convert
 
             // Range check
-            if (playerChoice > 4 || playerChoice <= 0) {
+            if (size != 1 ||playerChoice > 4 || playerChoice <= 0) {
                 throw out_of_range("選項超出範圍！");
             }
         } catch (const invalid_argument& e) {
@@ -100,7 +101,7 @@ void BattleSystem::bothTakingAction(PlayerPet*& playerPet, ComputerPet* computer
             cout << formatMsg("《系統訊息》", "31", true) << "嘗試逃跑中..." << endl;
             sleep(1);
             if (getRandomNum(0,100) < 50) {
-                cout << formatMsg("《系統訊息》", "31", true) << "逃跑成功！戰鬥結束！" << endl;
+                cout << formatMsg("《系統訊息》", "31", true) << "逃跑Successfully！戰鬥結束！" << endl;
                 playerEscape = true;
                 return;
             } else {
@@ -187,7 +188,7 @@ void BattleSystem::startBattle(Player& player) {
 
         // Check if the player has escaped
         if (playerEscape) {
-            cout << formatMsg("《系統訊息》", "31", true)<< "我方逃跑成功，戰鬥結束。\n";
+            cout << formatMsg("《系統訊息》", "31", true)<< "我方逃跑Successfully，戰鬥結束。\n";
             cout << "————————————————————————————————————————————————————————————————" << endl;
             for (int i = 0; i < 2; ++i) {
                 getPlayerPet(i)->heal();
@@ -271,6 +272,6 @@ void BattleSystem::startBattle(Player& player) {
 
         round++;
 
-        alignTime(10,0.1);
+        alignTime(10,0.08);
     }
 }
