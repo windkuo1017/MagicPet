@@ -226,8 +226,24 @@ void BattleSystem::startBattle(Player& player) {
                 alignTime(12,0.3);
                 break;
 
-            // 如果只有死第一隻
+            // 如果玩家只有死第一隻
             } else {
+                if(!getComputerPet(0)->isAlive() && !getComputerPet(1)->isAlive()){
+                    cout << formatMsg("《系統訊息》", "31", true) << "敵方兩隻寵物均被打敗，恭喜您獲得此次戰鬥的勝利！\n";
+                    cout << "————————————————————————————————————————————————————————————————" << endl;
+                
+                    for (int i = 0; i < 2; ++i) {
+                        if (getPlayerPet(i)->isAlive()) {getPlayerPet(i)->win();}
+                        if (!getPlayerPet(i)->isAlive()) {getPlayerPet(i)->lose();}
+                        getPlayerPet(i)->heal();
+                        //CD回復
+                        getPlayerPet(i)->skills[1]->reduceCD(true);
+                    }
+                    sleep(0.5);
+                    alignTime(10,0.3);
+                    break;
+                }
+
                 cout << formatMsg("《系統訊息》", "31", true) << "您的該隻寵物已戰敗，我方在下一回合將派出另一隻寵物上場！\n";
                 idxPlayer = 1 - idxPlayer; // Switch to the other pet
                 playerPet = getPlayerPet(idxPlayer);
@@ -238,19 +254,10 @@ void BattleSystem::startBattle(Player& player) {
                     idxComputer = 1 - idxComputer; // Switch to the other enemy pet
                     computerPet = getComputerPet(idxComputer);
                     computerDeadCnt++;
-                }else{
-                    cout << formatMsg("《系統訊息》", "31", true)<< "雙方的寵物全戰敗，此次戰鬥平手！\n";
-                    cout << "————————————————————————————————————————————————————————————————" << endl;
-                
-                    for (int i = 0; i < 2; i++){
-                        getPlayerPet(i)->heal();
-                        getPlayerPet(i)->skills[1]->reduceCD(true);
-                    }
-
-                    sleep(0.5);
-                    alignTime(20,0.1);
-                    break;
+                // 如果系統死兩隻了
                 }
+                
+
             }
         } 
         // 玩家寵物仍然活著
