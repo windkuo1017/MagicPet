@@ -53,7 +53,7 @@ bool Pet::isAlive() const { return currentHP > 0; }
 void Pet::print() const {
     cout << "寵物名稱：" << name << "\t";
     cout << "屬性：" << type << "\t";
-    cout << "血量：" << currentHP << "／" << maxHP << "\t";
+    cout << "血量：" << (currentHP < 0? 0: currentHP) << "／" << maxHP << "\t";
     cout << "攻擊力：" << attackPower << "\t";
     cout << "防禦力：" << defensePower << "\t";
     cout << "速度：" << speed << "\t";

@@ -202,7 +202,7 @@ void BattleSystem::startBattle(Player& player) {
         // Handle defeat and victory
         // 玩家這局死了
         if (!playerPet->isAlive()) {
-            // 如果都死了
+            // 如果玩家都死了
             if (!getPlayerPet(0)->isAlive() && !getPlayerPet(1)->isAlive()) {
                 if (getComputerPet(0)->isAlive() || getComputerPet(1)->isAlive()) {
                     cout << formatMsg("《系統訊息》", "31", true)<< "您的兩隻寵物均戰敗，敵方贏得此次戰鬥的勝利！\n";
@@ -218,7 +218,7 @@ void BattleSystem::startBattle(Player& player) {
                 }
 
                 for (int i = 0; i < 2; i++){
-                    getPlayerPet(1)->heal();
+                    getPlayerPet(i)->heal();
                     getPlayerPet(i)->skills[1]->reduceCD(true);
                 }
 
@@ -238,6 +238,18 @@ void BattleSystem::startBattle(Player& player) {
                     idxComputer = 1 - idxComputer; // Switch to the other enemy pet
                     computerPet = getComputerPet(idxComputer);
                     computerDeadCnt++;
+                }else{
+                    cout << formatMsg("《系統訊息》", "31", true)<< "雙方的寵物全戰敗，此次戰鬥平手！\n";
+                    cout << "————————————————————————————————————————————————————————————————" << endl;
+                
+                    for (int i = 0; i < 2; i++){
+                        getPlayerPet(i)->heal();
+                        getPlayerPet(i)->skills[1]->reduceCD(true);
+                    }
+
+                    sleep(0.5);
+                    alignTime(20,0.1);
+                    break;
                 }
             }
         } 
